@@ -3,7 +3,7 @@
 
 typedef int ElementType;
 
-//½¨Á¢½á¹¹Ìå
+//å»ºç«‹ç»“æ„ä½“
 typedef struct Node* LinkedList;
 struct Node
 {
@@ -12,30 +12,30 @@ struct Node
 };
 
 
-//Á´±íµÄ»ù±¾º¯ÊıµÄÉùÃ÷
-LinkedList createList();  //´´½¨¿Õ±í
-int IsEmpty(LinkedList list);  //ÅĞ¶ÏÒ»¸ö±íÊÇ²»ÊÇ¿Õ±í
-LinkedList Find(LinkedList list, ElementType X);  //²éÕÒÖ¸¶¨Î»ÖÃÔªËØ
-void HeadInsert(LinkedList list, ElementType X);  //Í·²å
-void EndInsert(LinkedList list, ElementType X);  //Î²²å
-void PrintList(LinkedList list);  //´òÓ¡
-void HeadDelete(LinkedList list);  //Í·É¾
-void EndDelete(LinkedList list);  //Î²É¾
-void InsertKth(LinkedList list, ElementType X, int K);  //Ö¸¶¨Î»ÖÃ²åÈë
-void DeleteKth(LinkedList list, int K);  //Ö¸¶¨Î»ÖÃÉ¾³ı
-int GetLength(LinkedList list);  //»ñÈ¡Á´±í³¤¶È
-void DestroyList(LinkedList* list);  //Ïú»ÙÕû¸öÁ´±í
-LinkedList FindPrevious(LinkedList list, ElementType X);  //²éÕÒÇ°Çı½áµã
-void DeleteValue(LinkedList list, ElementType X);  //°´ÖµÉ¾³ı½áµã
+//é“¾è¡¨çš„åŸºæœ¬å‡½æ•°çš„å£°æ˜
+LinkedList createList();  //åˆ›å»ºç©ºè¡¨
+int IsEmpty(LinkedList list);  //åˆ¤æ–­ä¸€ä¸ªè¡¨æ˜¯ä¸æ˜¯ç©ºè¡¨
+LinkedList Find(LinkedList list, ElementType X);  //æŸ¥æ‰¾æŒ‡å®šä½ç½®å…ƒç´ 
+void HeadInsert(LinkedList list, ElementType X);  //å¤´æ’
+void EndInsert(LinkedList list, ElementType X);  //å°¾æ’
+void PrintList(LinkedList list);  //æ‰“å°
+void HeadDelete(LinkedList list);  //å¤´åˆ 
+void EndDelete(LinkedList list);  //å°¾åˆ 
+void InsertKth(LinkedList list, ElementType X, int K);  //æŒ‡å®šä½ç½®æ’å…¥
+void DeleteKth(LinkedList list, int K);  //æŒ‡å®šä½ç½®åˆ é™¤
+int GetLength(LinkedList list);  //è·å–é“¾è¡¨é•¿åº¦
+void DestroyList(LinkedList* list);  //é”€æ¯æ•´ä¸ªé“¾è¡¨
+LinkedList FindPrevious(LinkedList list, ElementType X);  //æŸ¥æ‰¾å‰é©±ç»“ç‚¹
+void DeleteValue(LinkedList list, ElementType X);  //æŒ‰å€¼åˆ é™¤ç»“ç‚¹
 
 
-//´´½¨´øÓĞÍ·½áµãµÄ¿Õ±í
+//åˆ›å»ºå¸¦æœ‰å¤´ç»“ç‚¹çš„ç©ºè¡¨
 LinkedList createList()
 {
 	LinkedList list = (LinkedList)malloc(sizeof(struct Node));
 	if (list == NULL)
 	{
-		printf("ÄÚ´æ·ÖÅäÊ§°Ü\n");
+		printf("å†…å­˜åˆ†é…å¤±è´¥\n");
 		exit(1);
 	}
 	list->Next = NULL;
@@ -43,18 +43,18 @@ LinkedList createList()
 	return list;
 }
 
-//ÅĞ¶ÏÒ»¸ö±íÊÇ²»ÊÇ¿Õ±í
+//åˆ¤æ–­ä¸€ä¸ªè¡¨æ˜¯ä¸æ˜¯ç©ºè¡¨
 int IsEmpty(LinkedList list)
 {
 	return  list->Next;
 }
 
-//²éÕÒÖ¸¶¨Î»ÖÃÔªËØ
+//æŸ¥æ‰¾æŒ‡å®šä½ç½®å…ƒç´ 
 LinkedList Find(LinkedList list, ElementType X)
 {
 	if (list == NULL)
 	{
-		printf("´íÎó£¬Á´±íÎª¿Õ£¡\n");
+		printf("é”™è¯¯ï¼Œé“¾è¡¨ä¸ºç©ºï¼\n");
 		return NULL;
 	}
 
@@ -66,13 +66,13 @@ LinkedList Find(LinkedList list, ElementType X)
 	return P;
 }
 
-//Í·²å
+//å¤´æ’
 void HeadInsert(LinkedList list, ElementType X)
 {
 	LinkedList P = (LinkedList)malloc(sizeof(struct Node));
 	if (P == NULL)
 	{
-		printf("Í·²åÉêÇë½áµãÊ§°Ü£¡\n");
+		printf("å¤´æ’ç”³è¯·ç»“ç‚¹å¤±è´¥ï¼\n");
 		exit(2);
 	}
 	P->data = X;
@@ -81,13 +81,13 @@ void HeadInsert(LinkedList list, ElementType X)
 	list->data++;
 }
 
-//Î²²å
+//å°¾æ’
 void EndInsert(LinkedList list, ElementType X)
 {
 	LinkedList P = (LinkedList)malloc(sizeof(struct Node));
 	if (P == NULL)
 	{
-		printf("Î²²åÉêÇë½áµãÊ§°Ü£¡\n");
+		printf("å°¾æ’ç”³è¯·ç»“ç‚¹å¤±è´¥ï¼\n");
 		exit(3);
 	}
 	P->data = X;
@@ -110,16 +110,16 @@ void EndInsert(LinkedList list, ElementType X)
 	
 }
 
-//´òÓ¡
+//æ‰“å°
 void PrintList(LinkedList list)
 {
 	if (list->Next == NULL)
 	{
-		printf("Á´±íÎª¿Õ£¡\n");
+		printf("é“¾è¡¨ä¸ºç©ºï¼\n");
 	}
 	else
 	{
-		printf("¸ÃÁ´±íÓĞ%d¸öÔªËØ£¡\n", list->data);
+		printf("è¯¥é“¾è¡¨æœ‰%dä¸ªå…ƒç´ ï¼\n", list->data);
 		LinkedList P = list->Next;
 		int i = 1;
 		while (P != NULL)
@@ -132,12 +132,12 @@ void PrintList(LinkedList list)
 	}
 }
 
-//Í·É¾
+//å¤´åˆ 
 void HeadDelete(LinkedList list)
 {
 	if (list->Next == NULL)
 	{
-		printf("Á´±íÒÑ¿Õ£¬²»¿ÉÔÙÍ·É¾£¡\n");
+		printf("é“¾è¡¨å·²ç©ºï¼Œä¸å¯å†å¤´åˆ ï¼\n");
 	}
 	else
 	{
@@ -150,12 +150,12 @@ void HeadDelete(LinkedList list)
 	
 }
 
-//Î²É¾
+//å°¾åˆ 
 void EndDelete(LinkedList list)
 {
 	if (list->Next == NULL)
 	{
-		printf("Á´±íÒÑ¿Õ£¬²»¿ÉÔÙÎ²É¾£¡\n");
+		printf("é“¾è¡¨å·²ç©ºï¼Œä¸å¯å†å°¾åˆ ï¼\n");
 		return;
 	}
 	else
@@ -175,23 +175,23 @@ void EndDelete(LinkedList list)
 	}
 }
 
-//Ö¸¶¨Î»ÖÃ²åÈë
+//æŒ‡å®šä½ç½®æ’å…¥
 void InsertKth(LinkedList list, ElementType X, int K)
 {
 	if (K > list->data)
 	{
-		printf("Á´±íÃ»ÓĞÕâÃ´³¤£¡\n");
+		printf("é“¾è¡¨æ²¡æœ‰è¿™ä¹ˆé•¿ï¼\n");
 	}
 	else if (K <= 0)
 	{
-		printf("ÊäÈë´íÎó£¡\n");
+		printf("è¾“å…¥é”™è¯¯ï¼\n");
 	}
 	else
 	{
 		LinkedList P = (LinkedList)malloc(sizeof(struct Node));
 		if (P == NULL)
 		{
-			printf("Ö¸¶¨Î»ÖÃ²åÈëÉêÇë½áµãÊ§°Ü£¡\n");
+			printf("æŒ‡å®šä½ç½®æ’å…¥ç”³è¯·ç»“ç‚¹å¤±è´¥ï¼\n");
 			exit(4);
 		}
 		P->data = X;
@@ -208,24 +208,24 @@ void InsertKth(LinkedList list, ElementType X, int K)
 	}
 }
 
-//Ö¸¶¨Î»ÖÃÉ¾³ı
+//æŒ‡å®šä½ç½®åˆ é™¤
 void DeleteKth(LinkedList list, int K)
 {
 	if (list->Next == NULL)
 	{
-		printf("Á´±íÒÑ¿Õ£¬²»¿ÉÔÙÉ¾£¡\n");
+		printf("é“¾è¡¨å·²ç©ºï¼Œä¸å¯å†åˆ ï¼\n");
 		return;
 	}
 	else
 	{
 		if (K > list->data)
 		{
-			printf("Á´±íÃ»ÓĞÕâÃ´³¤£¡\n");
+			printf("é“¾è¡¨æ²¡æœ‰è¿™ä¹ˆé•¿ï¼\n");
 			return;
 		}
 		else if (K <= 0)
 		{
-			printf("ÊäÈë´íÎó£¡\n");
+			printf("è¾“å…¥é”™è¯¯ï¼\n");
 			return;
 		}
 		else
@@ -246,18 +246,18 @@ void DeleteKth(LinkedList list, int K)
 	}
 }
 
-//»ñÈ¡Á´±í³¤¶È
+//è·å–é“¾è¡¨é•¿åº¦
 int GetLength(LinkedList list)
 {
 	if (list->Next == NULL)
 	{
-		printf("Á´±íÎª¿Õ£¡\n");
+		printf("é“¾è¡¨ä¸ºç©ºï¼\n");
 		return 0;
 	}
 	return list->data;
 }
 
-//Ïú»ÙÕû¸öÁ´±í
+//é”€æ¯æ•´ä¸ªé“¾è¡¨
 void DestroyList(LinkedList* list)
 {
 	if (list == NULL || *list == NULL)
@@ -273,18 +273,18 @@ void DestroyList(LinkedList* list)
 		free(current);
 		current = nextNode;
 	}
-	*list = NULL; // ×Ô¶¯½«Íâ²¿Ö¸ÕëÉèÎªNULL
+	*list = NULL; // è‡ªåŠ¨å°†å¤–éƒ¨æŒ‡é’ˆè®¾ä¸ºNULL
 }
 
-// ²éÕÒÇ°Çı½Úµã
+// æŸ¥æ‰¾å‰é©±èŠ‚ç‚¹
 LinkedList FindPrevious(LinkedList list, ElementType X)
 {
 	if (list == NULL) {
-		printf("Á´±íÎ´³õÊ¼»¯£¡\n");
+		printf("é“¾è¡¨æœªåˆå§‹åŒ–ï¼\n");
 		return NULL;
 	}
 	if (list->Next == NULL) {
-		printf("Á´±íÎª¿Õ£¬Ã»ÓĞÇ°Çı½Úµã¿É²éÕÒ£¡\n");
+		printf("é“¾è¡¨ä¸ºç©ºï¼Œæ²¡æœ‰å‰é©±èŠ‚ç‚¹å¯æŸ¥æ‰¾ï¼\n");
 		return NULL;
 	}
 	LinkedList current = list->Next; 
@@ -295,20 +295,20 @@ LinkedList FindPrevious(LinkedList list, ElementType X)
 	}
 	if (current != NULL && current->data == X) {
 		if (previous == list) {
-			printf("ÕÒµ½ÖµÎª %d µÄ½Úµã£¬ËüÊÇµÚÒ»¸öÓĞĞ§½Úµã£¬Ç°ÇıÊÇÑÆÔªÍ·½Úµã\n", X);
+			printf("æ‰¾åˆ°å€¼ä¸º %d çš„èŠ‚ç‚¹ï¼Œå®ƒæ˜¯ç¬¬ä¸€ä¸ªæœ‰æ•ˆèŠ‚ç‚¹ï¼Œå‰é©±æ˜¯å“‘å…ƒå¤´èŠ‚ç‚¹\n", X);
 		}
 		return previous;
 	}
-	printf("Î´ÕÒµ½ÖµÎª %d µÄ½Úµã\n", X);
+	printf("æœªæ‰¾åˆ°å€¼ä¸º %d çš„èŠ‚ç‚¹\n", X);
 	return NULL;
 }
 
-//°´ÖµÉ¾³ı½áµã
+//æŒ‰å€¼åˆ é™¤ç»“ç‚¹
 void DeleteValue(LinkedList list, ElementType X)
 {
 	if (list->Next == NULL)
 	{
-		printf("Á´±íÒÑ¿Õ£¬²»¿ÉÔÙÉ¾£¡\n");
+		printf("é“¾è¡¨å·²ç©ºï¼Œä¸å¯å†åˆ ï¼\n");
 		return;
 	}
 	LinkedList current = list->Next;
@@ -330,7 +330,7 @@ void DeleteValue(LinkedList list, ElementType X)
 		}
 		else
 		{
-			printf("ÊäÈëÊı¾İÓĞÎó£¬Î´ÕÒµ½£¡\n");
+			printf("è¾“å…¥æ•°æ®æœ‰è¯¯ï¼Œæœªæ‰¾åˆ°ï¼\n");
 			return NULL;
 		}
 	}
@@ -393,4 +393,5 @@ int main()
 {
 	Test_1();
 	return 0;
+
 }
