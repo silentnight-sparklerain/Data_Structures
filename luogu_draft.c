@@ -1,0 +1,519 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef int ElementType;
+
+//建立结构体
+typedef struct Node* LinkedList;
+struct Node
+{
+    ElementType data;
+    LinkedList Next;
+};
+
+//链表的基本函数的声明
+LinkedList createList();  //创建空表
+int IsEmpty(LinkedList list);  //判断一个表是不是空表
+LinkedList Find(LinkedList list, ElementType X);  //查找指定位置元素
+void HeadInsert(LinkedList list, ElementType X);  //头插
+void EndInsert(LinkedList list, ElementType X);  //尾插
+void PrintList(LinkedList list);  //打印
+void HeadDelete(LinkedList list);  //头删
+void EndDelete(LinkedList list);  //尾删
+void InsertKth(LinkedList list, ElementType X, int K);  //指定位置插入
+void DeleteKth(LinkedList list, int K);  //指定位置删除
+int GetLength(LinkedList list);  //获取链表长度
+void DestroyList(LinkedList* list);  //销毁整个链表
+LinkedList FindPrevious(LinkedList list, ElementType X);  //查找前驱结点
+void DeleteValue(LinkedList list, ElementType X);  //按值删除结点
+
+//创建带有头结点的空表
+LinkedList createList()
+{
+    LinkedList list = (LinkedList)malloc(sizeof(struct Node));
+    if (list == NULL)
+    {
+        printf("内存分配失败\n");
+        exit(1);
+    }
+    list->Next = NULL;
+    list->data = 0;
+    return list;
+}
+
+//判断一个表是不是空表
+int IsEmpty(LinkedList list)
+{
+    return list->Next == NULL;
+}
+
+//查找指定值元素
+LinkedList Find(LinkedList list, ElementType X)
+{
+    if (list == NULL)
+    {
+        printf("错误，链表为空！\n");
+        return NULL;
+    }
+
+    LinkedList P = list->Next;
+    while (P != NULL && P->data != X)
+    {
+        P = P->Next;
+    }
+    return P;
+}
+
+//头插
+void HeadInsert(LinkedList list, ElementType X)
+{
+    LinkedList P = (LinkedList)malloc(sizeof(struct Node));
+    if (P == NULL)
+    {
+        printf("头插申请结点失败！\n");
+        exit(2);
+    }
+    P->data = X;
+    P->Next = list->Next;
+    list->Next = P;
+    list->data++;
+}
+
+//尾插
+void EndInsert(LinkedList list, ElementType X)
+{
+    LinkedList P = (LinkedList)malloc(sizeof(struct Node));
+    if (P == NULL)
+    {
+        printf("尾插申请结点失败！\n");
+        exit(3);
+    }
+    P->data = X;
+    P->Next = NULL;
+
+    if (list->Next == NULL)
+    {
+        list->Next = P;
+    }
+    else
+    {
+        LinkedList current = list->Next;
+        while (current->Next != NULL)
+        {
+            current = current->Next;
+        }
+        current->Next = P;
+    }
+    list->data++;
+}
+
+//打印
+void PrintList(LinkedList list)
+{
+    if (list->Next == NULL)
+    {
+        printf("链表为空！\n");
+    }
+    else
+    {
+        printf("该链表有%d个元素：", list->data);
+        LinkedList P = list->Next;
+        while (P != NULL)
+        {
+            printf("%d ", P->data);
+            P = P->Next;
+        }
+        printf("\n");
+    }
+}
+
+//头删
+void HeadDelete(LinkedList list)
+{
+    if (list->Next == NULL)
+    {
+        printf("链表已空，不可再头删！\n");
+    }
+    else
+    {
+        LinkedList current = list->Next;
+        list->Next = current->Next;
+        free(current);
+        list->data--;
+    }
+}
+
+//尾删
+void EndDelete(LinkedList list)
+{
+    if (list->Next == NULL)
+    {
+        printf("链表已空，不可再尾删！\n");
+        return;
+    }
+
+    LinkedList current = list;
+    while (current->Next != NULL && current->Next->Next != NULL)
+    {
+        current = current->Next;
+    }
+
+    free(current->Next);
+    current->Next = NULL;
+    list->data--;
+}
+
+//指定位置插入
+void InsertKth(LinkedList list, ElementType X, int K)
+{
+    if (K < 1 || K > list->data + 1)
+    {
+        printf("插入位置无效！\n");
+        return;
+    }
+
+    LinkedList P = (LinkedList)malloc(sizeof(struct Node));
+    if (P == NULL)
+    {
+        printf("指定位置插入申请结点失败！\n");
+        exit(4);
+    }
+    P->data = X;
+
+    LinkedList current = list;
+    for (int i = 1; i < K; i++)
+    {
+        current = current->Next;
+    }
+
+    P->Next = current->Next;
+    current->Next = P;
+    list->data++;
+}
+
+//指定位置删除
+void DeleteKth(LinkedList list, int K)
+{
+    if (list->Next == NULL)
+    {
+        printf("链表已空，不可再删！\n");
+        return;
+    }
+
+    if (K < 1 || K > list->data)
+    {
+        printf("删除位置无效！\n");
+        return;
+    }
+
+    LinkedList current = list;
+    for (int i = 1; i < K; i++)
+    {
+        current = current->Next;
+    }
+
+    LinkedList ToDelete = current->Next;
+    current->Next = ToDelete->Next;
+    free(ToDelete);
+    list->data--;
+}
+
+//获取链表长度
+int GetLength(LinkedList list)
+{
+    return list->data;
+}
+
+//销毁整个链表
+void DestroyList(LinkedList* list)
+{
+    if (list == NULL || *list == NULL)
+    {
+        return;
+    }
+
+    LinkedList current = *list;
+    LinkedList nextNode;
+
+    while (current != NULL)
+    {
+        nextNode = current->Next;
+        free(current);
+        current = nextNode;
+    }
+
+    *list = NULL;
+}
+
+// 查找前驱节点
+LinkedList FindPrevious(LinkedList list, ElementType X)
+{
+    if (list == NULL) 
+    {
+        printf("链表未初始化！\n");
+        return NULL;
+    }
+
+    if (list->Next == NULL) 
+    {
+        printf("链表为空，没有前驱节点可查找！\n");
+        return NULL;
+    }
+
+    LinkedList current = list->Next;
+    LinkedList previous = list;
+
+    // 如果第一个节点就是要找的节点
+    if (current->data == X) 
+    {
+        printf("找到值为 %d 的节点，它是第一个有效节点，前驱是哑元头节点\n", X);
+        return list; // 返回哑元头节点
+    }
+
+    // 遍历查找其他节点
+    while (current != NULL && current->data != X) 
+    {
+        previous = current;
+        current = current->Next;
+    }
+
+    if (current == NULL) 
+    {
+        printf("未找到值为 %d 的节点\n", X);
+        return NULL;
+    }
+
+    return previous;
+}
+
+
+//按值删除结点
+void DeleteValue(LinkedList list, ElementType X)
+{
+    if (list->Next == NULL)
+    {
+        printf("链表已空，不可再删！\n");
+        return;
+    }
+
+    LinkedList current = list->Next;
+    LinkedList previous = list;
+
+    while (current != NULL && current->data != X) 
+    {
+        previous = current;
+        current = current->Next;
+    }
+
+    if (current == NULL) 
+    {
+        printf("未找到值为 %d 的节点\n", X);
+        return;
+    }
+
+    previous->Next = current->Next;
+    free(current);
+    list->data--;
+}
+
+// 测试函数
+void testLinkedList() 
+{
+    printf("=== 链表测试 ===\n\n");
+
+    // 测试1: 创建链表
+    printf("1. 创建链表测试:\n");
+    LinkedList list = createList();
+    printf("创建空链表成功\n");
+    printf("链表是否为空: %s\n", IsEmpty(list) ? "是" : "否");
+    printf("链表长度: %d\n", GetLength(list));
+    PrintList(list);
+    printf("\n");
+
+    // 测试2: 头插法测试
+    printf("2. 头插法测试:\n");
+    HeadInsert(list, 10);
+    HeadInsert(list, 20);
+    HeadInsert(list, 30);
+    PrintList(list);
+    printf("链表长度: %d\n", GetLength(list));
+    printf("\n");
+
+    // 测试3: 尾插法测试
+    printf("3. 尾插法测试:\n");
+    EndInsert(list, 40);
+    EndInsert(list, 50);
+    EndInsert(list, 60);
+    PrintList(list);
+    printf("链表长度: %d\n", GetLength(list));
+    printf("\n");
+
+    // 测试4: 查找测试
+    printf("4. 查找测试:\n");
+    LinkedList found = Find(list, 30);
+    if (found != NULL) 
+    {
+        printf("找到值为 30 的节点\n");
+    }
+    else 
+    {
+        printf("未找到值为 30 的节点\n");
+    }
+
+    found = Find(list, 100);
+    if (found != NULL) 
+    {
+        printf("找到值为 100 的节点\n");
+    }
+    else 
+    {
+        printf("未找到值为 100 的节点\n");
+    }
+    printf("\n");
+
+    // 测试5: 查找前驱节点测试
+    printf("5. 查找前驱节点测试:\n");
+    LinkedList prev = FindPrevious(list, 30);
+    if (prev != NULL) 
+    {
+        printf("值为 30 的节点的前驱节点的值为: %d\n", prev->data);
+    }
+    prev = FindPrevious(list, 60);
+    if (prev != NULL) 
+    {
+        printf("值为 60 的节点的前驱节点的值为: %d\n", prev->data);
+    }
+    prev = FindPrevious(list, 10);
+    if (prev != NULL) 
+    {
+        printf("值为 10 的节点的前驱节点的值为: %d\n", prev->data);
+    }
+    printf("\n");
+
+    // 测试6: 指定位置插入测试
+    printf("6. 指定位置插入测试:\n");
+    printf("在位置 3 插入值 35:\n");
+    InsertKth(list, 35, 3);
+    PrintList(list);
+
+    printf("在位置 1 插入值 5:\n");
+    InsertKth(list, 5, 1);
+    PrintList(list);
+
+    printf("在位置 9 插入值 70:\n");
+    InsertKth(list, 70, 9);
+    PrintList(list);
+
+    // 测试无效位置插入
+    printf("尝试在位置 0 插入值 0:\n");
+    InsertKth(list, 0, 0);
+
+    printf("尝试在位置 20 插入值 100:\n");
+    InsertKth(list, 100, 20);
+    printf("\n");
+
+    // 测试7: 头删测试
+    printf("7. 头删测试:\n");
+    printf("删除前: ");
+    PrintList(list);
+    HeadDelete(list);
+    printf("删除后: ");
+    PrintList(list);
+    HeadDelete(list);
+    printf("再次删除后: ");
+    PrintList(list);
+    printf("\n");
+
+    // 测试8: 尾删测试
+    printf("8. 尾删测试:\n");
+    printf("删除前: ");
+    PrintList(list);
+    EndDelete(list);
+    printf("删除后: ");
+    PrintList(list);
+    EndDelete(list);
+    printf("再次删除后: ");
+    PrintList(list);
+    printf("\n");
+
+    // 测试9: 指定位置删除测试
+    printf("9. 指定位置删除测试:\n");
+    printf("删除前: ");
+    PrintList(list);
+    printf("删除位置 3:\n");
+    DeleteKth(list, 3);
+    PrintList(list);
+
+    printf("删除位置 1:\n");
+    DeleteKth(list, 1);
+    PrintList(list);
+
+    // 测试无效位置删除
+    printf("尝试删除位置 0:\n");
+    DeleteKth(list, 0);
+
+    printf("尝试删除位置 10:\n");
+    DeleteKth(list, 10);
+    printf("\n");
+
+    // 测试10: 按值删除测试
+    printf("10. 按值删除测试:\n");
+    printf("删除前: ");
+    PrintList(list);
+    printf("删除值为 40 的节点:\n");
+    DeleteValue(list, 40);
+    PrintList(list);
+
+    printf("删除值为 35 的节点:\n");
+    DeleteValue(list, 35);
+    PrintList(list);
+
+    printf("尝试删除不存在的值 100:\n");
+    DeleteValue(list, 100);
+    PrintList(list);
+    printf("\n");
+
+    // 测试11: 空链表操作测试
+    printf("11. 空链表操作测试:\n");
+    // 清空链表
+    while (!IsEmpty(list)) 
+    {
+        HeadDelete(list);
+    }
+    printf("清空后的链表: ");
+    PrintList(list);
+
+    printf("尝试在空链表头删:\n");
+    HeadDelete(list);
+
+    printf("尝试在空链表尾删:\n");
+    EndDelete(list);
+
+    printf("尝试在空链表查找:\n");
+    found = Find(list, 10);
+    if (found == NULL) 
+    {
+        printf("空链表查找返回NULL\n");
+    }
+    printf("\n");
+
+    // 测试12: 销毁链表测试
+    printf("12. 销毁链表测试:\n");
+    DestroyList(&list);
+    if (list == NULL) 
+    {
+        printf("链表已成功销毁\n");
+    }
+    else 
+    {
+        printf("链表销毁失败\n");
+    }
+
+    printf("=== 测试完成 ===\n");
+}
+
+int main() 
+{
+    testLinkedList();
+    return 0;
+}
