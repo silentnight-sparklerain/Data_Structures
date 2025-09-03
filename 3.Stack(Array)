@@ -1,0 +1,306 @@
+//栈——数组实现
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef int ElementType;
+
+// 定义栈结构
+struct Node 
+{
+    ElementType* array;     // 存储栈元素的数组
+    int top;        // 栈顶指针（索引）
+    int capacity;   // 栈的容量
+};
+typedef struct Node* ArrayStack;
+
+//函数声明
+ArrayStack createArrayStack(int capacity);  //创建空栈
+bool IsEmpty(ArrayStack stack);  //判断栈是否为空
+bool IsFull(ArrayStack stack);  //判断栈是否已满
+void PushArrayStack(ArrayStack stack, ElementType X);  //入栈
+ElementType PopArrayStack(ArrayStack stack);  //出栈
+ElementType TopArrayStack(ArrayStack stack);  //获取栈顶元素
+int sizeArrayStack(ArrayStack stack);  //获取栈的大小
+void PrintArrayStack(ArrayStack stack);  //打印栈
+void clearArrayStack(ArrayStack stack);  //清空栈
+void destroyArrayStack(ArrayStack stack);  //销毁栈
+void resizeArrayStack(ArrayStack stack, int newcapacity);  //动态扩容栈
+
+
+//创建空栈
+ArrayStack createArrayStack(int capacity)
+{
+    ArrayStack stack = (ArrayStack)malloc(sizeof(struct Node));
+    if (stack == NULL)
+    {
+        printf("内存分配失败，创建空栈失败！\n");
+        return NULL;
+    }
+    stack->array = (ElementType*)malloc(sizeof(ElementType) * capacity);
+    stack->top = -1;
+    stack->capacity = capacity;
+    if (stack->array == NULL)
+    {
+        printf("内存分配失败，创建数组失败！\n");
+        free(stack);
+        stack = NULL;
+        return NULL;
+    }
+    return stack;
+}
+
+//判断栈是否为空
+bool IsEmpty(ArrayStack stack)
+{
+    return stack->top == -1;
+}
+
+//判断栈是否已满
+bool IsFull(ArrayStack stack)
+{
+    return stack->top == stack->capacity - 1;
+}
+
+//入栈
+void PushArrayStack(ArrayStack stack, ElementType X)
+{
+    if (IsFull(stack))
+    {
+        printf("栈已满，无法入栈！\n");
+        return;
+    }
+    stack->array[++stack->top] = X;
+}
+
+//出栈
+ElementType PopArrayStack(ArrayStack stack)
+{
+    if (IsEmpty(stack))
+    {
+        printf("栈已空，无法出栈！\n");
+        return 0;
+    }
+    return stack->array[stack->top--];
+}
+
+//获取栈顶元素
+ElementType TopArrayStack(ArrayStack stack)
+{
+    if (IsEmpty(stack))
+    {
+        printf("栈已空，无法获取栈顶元素！\n");
+        return 0;
+    }
+    return stack->array[stack->top];
+}
+
+//获取栈的大小
+int sizeArrayStack(ArrayStack stack)
+{
+    return stack->top + 1;
+}
+
+//打印栈
+void PrintArrayStack(ArrayStack stack)
+{
+    if (IsEmpty(stack))
+    {
+        printf("栈已空！\n");
+        return 0;
+    }
+    printf("栈内容：从顶到底：");
+    for (int i = stack->top; i >= 0; i--)
+    {
+        printf("%d ", stack->array[i]);
+    }
+    printf("\n");
+}
+
+//清空栈
+void clearArrayStack(ArrayStack stack)
+{
+    stack->top = -1;
+}
+
+//销毁栈
+void destroyArrayStack(ArrayStack stack)
+{
+    if (stack) 
+    {
+        if (stack->array) 
+        {
+            free(stack->array);
+            stack->array = NULL;
+        }
+        free(stack);
+        stack = NULL;
+    }
+}
+
+//动态扩容栈
+void resizeArrayStack(ArrayStack stack, int newcapacity)
+{
+    if (newcapacity <= stack->capacity)
+    {
+        printf("新容量太小，无法扩容！\n");
+        return;
+    }
+    ElementType* newarray = (ElementType*)realloc(stack->array, sizeof(ElementType) * newcapacity);
+    if (newarray == NULL)
+    {
+        printf("扩容失败！\n");
+        return;
+    }
+    stack->array = newarray;
+    stack->capacity = newcapacity;
+}
+
+// 测试函数
+void testArrayStack()
+{
+    printf("===== 开始测试栈（数组实现）=====\n\n");
+
+    // 测试1：创建栈
+    printf("1. 创建容量为3的栈\n");
+    ArrayStack stack = createArrayStack(3);
+    if (stack == NULL)
+    {
+        printf("创建栈失败，测试终止！\n");
+        return;
+    }
+    printf("   栈创建成功，容量：%d\n", stack->capacity);
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    printf("   栈是否为空：%s\n", IsEmpty(stack) ? "是" : "否");
+    PrintArrayStack(stack);
+    printf("\n");
+
+    // 测试2：空栈操作测试
+    printf("2. 空栈操作测试\n");
+    printf("   尝试从空栈弹出元素：");
+    ElementType popped = PopArrayStack(stack);
+    printf("\n");
+
+    printf("   尝试获取空栈栈顶元素：");
+    ElementType top = TopArrayStack(stack);
+    printf("\n\n");
+
+    // 测试3：入栈操作
+    printf("3. 入栈操作测试\n");
+    printf("   入栈元素：10\n");
+    PushArrayStack(stack, 10);
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    printf("   栈顶元素：%d\n", TopArrayStack(stack));
+    PrintArrayStack(stack);
+    printf("\n");
+
+    printf("   入栈元素：20\n");
+    PushArrayStack(stack, 20);
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    printf("   栈顶元素：%d\n", TopArrayStack(stack));
+    PrintArrayStack(stack);
+    printf("\n");
+
+    printf("   入栈元素：30\n");
+    PushArrayStack(stack, 30);
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    printf("   栈顶元素：%d\n", TopArrayStack(stack));
+    PrintArrayStack(stack);
+    printf("\n");
+
+    // 测试4：栈满测试
+    printf("4. 栈满测试\n");
+    printf("   尝试入栈元素：40（超过容量）\n");
+    PushArrayStack(stack, 40);
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    PrintArrayStack(stack);
+    printf("\n");
+
+    // 测试5：出栈操作
+    printf("5. 出栈操作测试\n");
+    printf("   出栈元素：%d\n", PopArrayStack(stack));
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    printf("   栈顶元素：%d\n", TopArrayStack(stack));
+    PrintArrayStack(stack);
+    printf("\n");
+
+    printf("   出栈元素：%d\n", PopArrayStack(stack));
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    printf("   栈顶元素：%d\n", TopArrayStack(stack));
+    PrintArrayStack(stack);
+    printf("\n");
+
+    printf("   出栈元素：%d\n", PopArrayStack(stack));
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    PrintArrayStack(stack);
+    printf("\n");
+
+    // 测试6：再次空栈操作
+    printf("6. 再次空栈操作测试\n");
+    printf("   尝试从空栈弹出元素：");
+    popped = PopArrayStack(stack);
+    printf("\n");
+
+    printf("   尝试获取空栈栈顶元素：");
+    top = TopArrayStack(stack);
+    printf("\n\n");
+
+    // 测试7：重新填充栈
+    printf("7. 重新填充栈\n");
+    for (int i = 1; i <= 3; i++)
+    {
+        PushArrayStack(stack, i * 5);
+        printf("   入栈元素：%d\n", i * 5);
+    }
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    PrintArrayStack(stack);
+    printf("\n");
+
+    // 测试8：清空栈
+    printf("8. 清空栈\n");
+    clearArrayStack(stack);
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    printf("   栈是否为空：%s\n", IsEmpty(stack) ? "是" : "否");
+    PrintArrayStack(stack);
+    printf("\n");
+
+    // 测试9：扩容测试
+    printf("9. 扩容测试\n");
+    printf("   重新填充栈至满\n");
+    for (int i = 1; i <= 3; i++)
+    {
+        PushArrayStack(stack, i * 10);
+        printf("   入栈元素：%d\n", i * 10);
+    }
+    printf("   当前栈大小：%d，容量：%d\n", sizeArrayStack(stack), stack->capacity);
+    PrintArrayStack(stack);
+    printf("\n");
+
+    printf("   尝试扩容到5\n");
+    resizeArrayStack(stack, 5);
+    printf("   当前栈容量：%d\n", stack->capacity);
+    printf("   尝试入栈更多元素\n");
+    PushArrayStack(stack, 40);
+    PushArrayStack(stack, 50);
+    printf("   当前栈大小：%d\n", sizeArrayStack(stack));
+    PrintArrayStack(stack);
+    printf("\n");
+
+    printf("   尝试扩容到比当前容量小（3）\n");
+    resizeArrayStack(stack, 3);
+    printf("   当前栈容量：%d\n", stack->capacity);
+    printf("\n");
+
+    // 测试10：销毁栈
+    printf("10. 销毁栈\n");
+    destroyArrayStack(stack);
+    printf("   栈已销毁\n");
+
+    printf("\n===== 栈测试完成 =====\n");
+}
+
+int main()
+{
+    testArrayStack();
+    return 0;
+}
