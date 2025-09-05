@@ -1,0 +1,295 @@
+//二叉搜索树——单个结构体实现
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef int ElementType;
+
+//二叉树的结点结构体
+typedef struct Node* TreeNode;
+struct Node
+{
+	ElementType data;
+	TreeNode left;
+	TreeNode right;
+};
+
+//函数声明
+TreeNode CreateTreeNode(ElementType X);  //创建树结点
+TreeNode InsertTreeNode(TreeNode root, ElementType X);  //插入结点
+TreeNode SearchTreeNode(TreeNode root, ElementType X);  //查找结点
+TreeNode FindMin(TreeNode root);  //查找最小元素结点
+TreeNode FindMax(TreeNode root);  //查找最大元素结点
+TreeNode DeleteTreeNode(TreeNode root, ElementType X);  //按值删除结点
+void PrintMOT(TreeNode root);  //中序遍历打印
+int getHeight(TreeNode root);  //获取树的高度
+void FreeTree(TreeNode root);  //销毁整棵树
+
+
+//创建树结点
+TreeNode CreateTreeNode(ElementType X)
+{
+	TreeNode root = (TreeNode)malloc(sizeof(struct Node));
+	if (root == NULL)
+	{
+		printf("内存申请失败，创建树的结点失败！\n");
+		return NULL;
+	}
+	root->data = X;
+	root->left = NULL;
+	root->right = NULL;
+	return root;
+}
+
+//插入结点
+TreeNode InsertTreeNode(TreeNode root, ElementType X)
+{
+	if (root == NULL)
+	{
+		return CreateTreeNode(X);
+	}
+	if (root->data < X)
+	{
+		root->right = InsertTreeNode(root->right, X);
+	}
+	else if (root->data > X)
+	{
+		root->left = InsertTreeNode(root->left, X);
+	}
+	return root;
+}
+
+//查找结点
+TreeNode SearchTreeNode(TreeNode root, ElementType X)
+{
+	if (root == NULL || root->data == X)
+	{
+		return root;
+	}
+	if (root->data > X)
+	{
+		return SearchTreeNode(root->left, X);
+	}
+	else
+	{
+		return SearchTreeNode(root->right, X);
+	}
+}
+
+//查找最小元素结点
+TreeNode FindMin(TreeNode root)
+{
+	TreeNode current = root;
+	while (current && (current->left != NULL))
+	{
+		current = current->left;
+	}
+	return current;
+}
+
+//查找最大元素结点
+TreeNode FindMax(TreeNode root)
+{
+	TreeNode current = root;
+	while (current && (current->right != NULL))
+	{
+		current = current->right;
+	}
+	return current;
+}
+
+//按值删除结点
+TreeNode DeleteTreeNode(TreeNode root, ElementType X)
+{
+	if (root == NULL)
+	{
+		return root;
+	}
+	if (root->data < X)
+	{
+		root->right = DeleteTreeNode(root->right, X);
+	}
+	else if (root->data > X)
+	{
+		root->left = DeleteTreeNode(root->left, X);
+	}
+	else
+	{
+		//1.只有左子树或只有右子树或都没有
+		if (root->left == NULL)
+		{
+			TreeNode current = root->right;
+			free(root);
+			root = NULL;
+			return current;
+		}
+		else if(root->right == NULL)
+		{
+			TreeNode current = root->left;
+			free(root);
+			root = NULL;
+			return current;
+		}
+		//2.左右子树都有
+		TreeNode current = FindMin(root->right);
+		root->data = current->data;
+		root->right = DeleteTreeNode(root->right, current->data);
+	}
+	return root;
+}
+
+//中序遍历打印
+void PrintMOT(TreeNode root)
+{
+	if (root == NULL)
+	{
+		return;
+	}
+	PrintMOT(root->left);
+	printf("%d ", root->data);
+	PrintMOT(root->right);
+}
+
+//获取树的高度
+int getHeight(TreeNode root)
+{
+	if (root == NULL)
+	{
+		return 0;
+	}
+	int leftheight = getHeight(root->left);
+	int rightheight = getHeight(root->right);
+	return (leftheight > rightheight ? leftheight : rightheight) + 1;
+}
+
+//销毁整棵树
+void FreeTree(TreeNode root)
+{
+	if (root != NULL)
+	{
+		FreeTree(root->right);
+		FreeTree(root->left);
+		free(root);
+		root = NULL;
+	}
+}
+
+// 测试函数
+void testBST() {
+    printf("=== 二叉搜索树测试 ===\n\n");
+
+    TreeNode root = NULL;
+
+    // 1. 测试空树
+    printf("1. 测试空树:\n");
+    printf("   树的高度: %d\n", getHeight(root));
+    printf("   最小值: %s\n", FindMin(root) ? "存在" : "不存在");
+    printf("   最大值: %s\n", FindMax(root) ? "存在" : "不存在");
+    printf("   查找10: %s\n", SearchTreeNode(root, 10) ? "找到" : "未找到");
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    // 2. 测试插入单个节点
+    printf("2. 测试插入单个节点(50):\n");
+    root = InsertTreeNode(root, 50);
+    printf("   树的高度: %d\n", getHeight(root));
+    printf("   最小值: %d\n", FindMin(root)->data);
+    printf("   最大值: %d\n", FindMax(root)->data);
+    printf("   查找50: %s\n", SearchTreeNode(root, 50) ? "找到" : "未找到");
+    printf("   查找10: %s\n", SearchTreeNode(root, 10) ? "找到" : "未找到");
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    // 3. 测试插入多个节点
+    printf("3. 测试插入多个节点(30, 70, 20, 40, 60, 80):\n");
+    root = InsertTreeNode(root, 30);
+    root = InsertTreeNode(root, 70);
+    root = InsertTreeNode(root, 20);
+    root = InsertTreeNode(root, 40);
+    root = InsertTreeNode(root, 60);
+    root = InsertTreeNode(root, 80);
+    printf("   树的高度: %d\n", getHeight(root));
+    printf("   最小值: %d\n", FindMin(root)->data);
+    printf("   最大值: %d\n", FindMax(root)->data);
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    // 4. 测试插入重复值
+    printf("4. 测试插入重复值(50):\n");
+    TreeNode beforeInsert = root;
+    root = InsertTreeNode(root, 50); // 应该不会改变树结构
+    printf("   树结构是否改变: %s\n", (beforeInsert == root) ? "否" : "是");
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    // 5. 测试查找各种情况
+    printf("5. 测试查找:\n");
+    printf("   查找存在的值(40): %s\n", SearchTreeNode(root, 40) ? "找到" : "未找到");
+    printf("   查找不存在的值(100): %s\n", SearchTreeNode(root, 100) ? "找到" : "未找到");
+    printf("   查找最小值(20): %s\n", SearchTreeNode(root, 20) ? "找到" : "未找到");
+    printf("   查找最大值(80): %s\n", SearchTreeNode(root, 80) ? "找到" : "未找到\n");
+
+    // 6. 测试删除叶子节点
+    printf("6. 测试删除叶子节点(20):\n");
+    root = DeleteTreeNode(root, 20);
+    printf("   查找20: %s\n", SearchTreeNode(root, 20) ? "找到" : "未找到");
+    printf("   最小值: %d\n", FindMin(root)->data);
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    // 7. 测试删除只有一个子节点的节点
+    printf("7. 测试删除只有一个子节点的节点(30):\n");
+    root = DeleteTreeNode(root, 30); // 30有一个右子节点40
+    printf("   查找30: %s\n", SearchTreeNode(root, 30) ? "找到" : "未找到");
+    printf("   查找40: %s\n", SearchTreeNode(root, 40) ? "找到" : "未找到");
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    // 8. 测试删除有两个子节点的节点
+    printf("8. 测试删除有两个子节点的节点(50 - 根节点):\n");
+    root = DeleteTreeNode(root, 50);
+    printf("   查找50: %s\n", SearchTreeNode(root, 50) ? "找到" : "未找到");
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    // 9. 测试删除不存在的节点
+    printf("9. 测试删除不存在的节点(100):\n");
+    TreeNode beforeDelete = root;
+    root = DeleteTreeNode(root, 100);
+    printf("   树结构是否改变: %s\n", (beforeDelete == root) ? "否" : "是");
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    // 10. 测试删除所有节点
+    printf("10. 测试删除所有节点:\n");
+    root = DeleteTreeNode(root, 40);
+    root = DeleteTreeNode(root, 60);
+    root = DeleteTreeNode(root, 70);
+    root = DeleteTreeNode(root, 80);
+    printf("   树的高度: %d\n", getHeight(root));
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    // 11. 测试空树删除
+    printf("11. 测试空树删除:\n");
+    root = DeleteTreeNode(root, 100); // 尝试删除空树中的节点
+    printf("   操作完成，没有崩溃\n\n");
+
+    // 12. 测试重新插入
+    printf("12. 测试重新插入节点:\n");
+    root = InsertTreeNode(root, 25);
+    root = InsertTreeNode(root, 15);
+    root = InsertTreeNode(root, 35);
+    printf("   树的高度: %d\n", getHeight(root));
+    printf("   最小值: %d\n", FindMin(root)->data);
+    printf("   最大值: %d\n", FindMax(root)->data);
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    // 13. 测试销毁树
+    printf("13. 测试销毁树:\n");
+    FreeTree(root);
+    root = NULL;
+    printf("   树已销毁\n");
+    printf("   树的高度: %d\n", getHeight(root));
+    printf("   中序遍历: "); PrintMOT(root); printf("\n\n");
+
+    printf("=== 测试完成 ===\n");
+}
+
+int main()
+{
+	testBST();
+
+	return 0;
+}
