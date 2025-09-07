@@ -10,28 +10,28 @@ struct Node
 	ElementType data;
 	AVLTree left;
 	AVLTree right;
-	int height;  //½áµã¸ß¶È
+	int height;  //ç»“ç‚¹é«˜åº¦
 };
 
-//º¯ÊıÉùÃ÷
-int getHeight(AVLTree tree);  //»ñÈ¡¸ß¶È
-int getMax(int a, int b);  //»ñÈ¡Á½¸öÕûÊıÖĞµÄ×î´óÖµ
-AVLTree createTree(ElementType X);  //½¨Á¢ĞÂÊ÷
-AVLTree rightRotate(AVLTree tree);  //ÓÒĞı
-AVLTree leftRotate(AVLTree tree);  //×óĞı
-int getBalance(AVLTree tree);  //»ñÈ¡½áµãµÄÆ½ºâÒò×Ó
-AVLTree insertNode(AVLTree tree, ElementType X);  //²åÈëĞÂ½áµã
-AVLTree minNode(AVLTree tree);  //²éÕÒ×îĞ¡Öµ½áµã 
-AVLTree deleteNode(AVLTree tree, ElementType X);  //°´ÖµÉ¾³ı½áµã
-void PrintMidOT(AVLTree tree);  //ÖĞĞò±éÀú´òÓ¡
-void PrintPreOT(AVLTree tree);  //Ç°Ğò±éÀú´òÓ¡
-void PrintPostOT(AVLTree tree);  //ºóĞò±éÀú´òÓ¡
-AVLTree searchNode(AVLTree tree, ElementType X);  //°´Öµ²éÕÒ
-void freeAVLTree(AVLTree tree);  //ÊÍ·ÅAVLÊ÷
+//å‡½æ•°å£°æ˜
+int getHeight(AVLTree tree);  //è·å–é«˜åº¦
+int getMax(int a, int b);  //è·å–ä¸¤ä¸ªæ•´æ•°ä¸­çš„æœ€å¤§å€¼
+AVLTree createTree(ElementType X);  //å»ºç«‹æ–°æ ‘
+AVLTree rightRotate(AVLTree tree);  //å³æ—‹
+AVLTree leftRotate(AVLTree tree);  //å·¦æ—‹
+int getBalance(AVLTree tree);  //è·å–ç»“ç‚¹çš„å¹³è¡¡å› å­
+AVLTree insertNode(AVLTree tree, ElementType X);  //æ’å…¥æ–°ç»“ç‚¹
+AVLTree minNode(AVLTree tree);  //æŸ¥æ‰¾æœ€å°å€¼ç»“ç‚¹ 
+AVLTree deleteNode(AVLTree tree, ElementType X);  //æŒ‰å€¼åˆ é™¤ç»“ç‚¹
+void PrintMidOT(AVLTree tree);  //ä¸­åºéå†æ‰“å°
+void PrintPreOT(AVLTree tree);  //å‰åºéå†æ‰“å°
+void PrintPostOT(AVLTree tree);  //ååºéå†æ‰“å°
+AVLTree searchNode(AVLTree tree, ElementType X);  //æŒ‰å€¼æŸ¥æ‰¾
+void freeAVLTree(AVLTree tree);  //é‡Šæ”¾AVLæ ‘
 
 
 
-//»ñÈ¡¸ß¶È
+//è·å–é«˜åº¦
 int getHeight(AVLTree tree)
 {
 	if (tree == NULL)
@@ -41,19 +41,19 @@ int getHeight(AVLTree tree)
 	return tree->height;
 }
 
-//»ñÈ¡Á½¸öÕûÊıÖĞµÄ×î´óÖµ
+//è·å–ä¸¤ä¸ªæ•´æ•°ä¸­çš„æœ€å¤§å€¼
 int getMax(int a, int b)
 {
 	return (a > b) ? a : b;
 }
 
-//½¨Á¢ĞÂÊ÷
+//å»ºç«‹æ–°æ ‘
 AVLTree createTree(ElementType X)
 {
 	AVLTree root = (AVLTree)malloc(sizeof(struct Node));
 	if (root == NULL)
 	{
-		printf("ÉêÇë¸ù½áµãÊ§°Ü£¬½¨Á¢ĞÂÊ÷Ê§°Ü£¡\n");
+		printf("ç”³è¯·æ ¹ç»“ç‚¹å¤±è´¥ï¼Œå»ºç«‹æ–°æ ‘å¤±è´¥ï¼\n");
 		return NULL;
 	}
 	root->data = X;
@@ -63,33 +63,33 @@ AVLTree createTree(ElementType X)
 	return root;
 }
 
-//ÓÒĞı
+//å³æ—‹
 AVLTree rightRotate(AVLTree tree)
 {
 	AVLTree tree_left = tree->left;
 	AVLTree tree_left_right = tree->left->right;
 	tree_left->right = tree;
 	tree->left = tree_left_right;
-	//ĞŞ¸Ä¸ß¶È
+	//ä¿®æ”¹é«˜åº¦
 	tree->height = getMax(getHeight(tree->left), getHeight(tree->right)) + 1;
 	tree_left->height = getMax(getHeight(tree_left->left), getHeight(tree_left->right)) + 1;
 	return tree_left;
 }
 
-//×óĞı
+//å·¦æ—‹
 AVLTree leftRotate(AVLTree tree)
 {
 	AVLTree tree_right = tree->right;
 	AVLTree tree_right_left = tree->right->left;
 	tree_right->left = tree;
 	tree->right = tree_right_left;
-	//ĞŞ¸Ä¸ß¶È
+	//ä¿®æ”¹é«˜åº¦
 	tree->height = getMax(getHeight(tree->left), getHeight(tree->right)) + 1;
 	tree_right->height = getMax(getHeight(tree_right->left), getHeight(tree_right->right)) + 1;
 	return tree_right;
 }
 
-//»ñÈ¡½áµãµÄÆ½ºâÒò×Ó
+//è·å–ç»“ç‚¹çš„å¹³è¡¡å› å­
 int getBalance(AVLTree tree)
 {
 	if (tree == NULL)
@@ -99,10 +99,10 @@ int getBalance(AVLTree tree)
 	return getHeight(tree->left) - getHeight(tree->right);
 }
 
-//²åÈëĞÂ½áµã
+//æ’å…¥æ–°ç»“ç‚¹
 AVLTree insertNode(AVLTree tree, ElementType X)
 {
-	//1.ÏÈÖ´ĞĞ±ê×¼µÄ²åÈë
+	//1.å…ˆæ‰§è¡Œæ ‡å‡†çš„æ’å…¥
 	if (tree == NULL)
 	{
 		return createTree(X);
@@ -117,30 +117,30 @@ AVLTree insertNode(AVLTree tree, ElementType X)
 	}
 	else
 	{
-		return tree;  //²»ÔÊĞíÊ÷ÖĞÓĞÖØ¸´½áµã
+		return tree;  //ä¸å…è®¸æ ‘ä¸­æœ‰é‡å¤ç»“ç‚¹
 	}
-	//2.¸üĞÂ½áµãµÄ¸ß¶È
+	//2.æ›´æ–°ç»“ç‚¹çš„é«˜åº¦
 	tree->height = getMax(getHeight(tree->left), getHeight(tree->right)) + 1;
-	//3.¼ì²éÊÇ·ñÒıÆğÊ§ºâ
+	//3.æ£€æŸ¥æ˜¯å¦å¼•èµ·å¤±è¡¡
 	int balance = getBalance(tree);
-	//4.ÈôÊ§ºâ£¬½øĞĞĞı×ªµ÷Õû
-	//ÓÒÓÒÇé¿ö£¬×óĞı
+	//4.è‹¥å¤±è¡¡ï¼Œè¿›è¡Œæ—‹è½¬è°ƒæ•´
+	//å³å³æƒ…å†µï¼Œå·¦æ—‹
 	if (balance < -1 && tree->right->data < X)
 	{
 		return leftRotate(tree);
 	}
-	//×ó×óÇé¿ö£¬ÓÒĞı
+	//å·¦å·¦æƒ…å†µï¼Œå³æ—‹
 	if (balance > 1 && tree->left->data > X)
 	{
 		return rightRotate(tree);
 	}
-	//ÓÒ×óÇé¿ö£¬ÓÒ×óĞı
+	//å³å·¦æƒ…å†µï¼Œå³å·¦æ—‹
 	if (balance < -1 && tree->right->data > X)
 	{
 		tree->right = rightRotate(tree->right);
 		return leftRotate(tree);
 	}
-	//×óÓÒÇé¿ö£¬×óÓÒĞı
+	//å·¦å³æƒ…å†µï¼Œå·¦å³æ—‹
 	if (balance > 1 && tree->left->data < X)
 	{
 		tree->left = leftRotate(tree->left);
@@ -149,7 +149,7 @@ AVLTree insertNode(AVLTree tree, ElementType X)
 	return tree;
 }
 
-//²éÕÒ×îĞ¡Öµ½áµã
+//æŸ¥æ‰¾æœ€å°å€¼ç»“ç‚¹
 AVLTree minNode(AVLTree tree)
 {
 	AVLTree current = tree;
@@ -160,10 +160,10 @@ AVLTree minNode(AVLTree tree)
 	return current;
 }
 
-//°´ÖµÉ¾³ı½áµã
+//æŒ‰å€¼åˆ é™¤ç»“ç‚¹
 AVLTree deleteNode(AVLTree tree, ElementType X)
 {
-	//1.ÏÈÖ´ĞĞ±ê×¼µÄÉ¾³ı
+	//1.å…ˆæ‰§è¡Œæ ‡å‡†çš„åˆ é™¤
 	if (tree == NULL)
 	{
 		return tree;
@@ -178,8 +178,8 @@ AVLTree deleteNode(AVLTree tree, ElementType X)
 	}
 	else
 	{
-		//ÒÑÕÒµ½ÒªÉ¾³ıµÄ½áµã
-		//½áµãÓĞÒ»¸ö×Ó½áµã»òÎŞ×Ó½áµã
+		//å·²æ‰¾åˆ°è¦åˆ é™¤çš„ç»“ç‚¹
+		//ç»“ç‚¹æœ‰ä¸€ä¸ªå­ç»“ç‚¹æˆ–æ— å­ç»“ç‚¹
 		if (tree->left == NULL || tree->right == NULL)
 		{
 			if (tree->left == NULL)
@@ -197,7 +197,7 @@ AVLTree deleteNode(AVLTree tree, ElementType X)
 				return current;
 			}
 		}
-		//½áµãÓĞÁ½¸ö×Ó½áµã
+		//ç»“ç‚¹æœ‰ä¸¤ä¸ªå­ç»“ç‚¹
 		else
 		{
 			AVLTree current = minNode(tree->right);
@@ -205,33 +205,33 @@ AVLTree deleteNode(AVLTree tree, ElementType X)
 			tree->right = deleteNode(tree->right, current->data);
 		}
 	}
-	//Èç¹ûÊ÷Ö»ÓĞÒ»¸ö½áµã£¬É¾ÍêÖ±½Ó·µ»Ø
+	//å¦‚æœæ ‘åªæœ‰ä¸€ä¸ªç»“ç‚¹ï¼Œåˆ å®Œç›´æ¥è¿”å›
 	if (tree == NULL)
 	{
 		return tree;
 	}
-	//2.¸üĞÂ½áµãµÄ¸ß¶È
+	//2.æ›´æ–°ç»“ç‚¹çš„é«˜åº¦
 	tree->height = getMax(getHeight(tree->left), getHeight(tree->right)) + 1;
-	//3.¼ì²éÊÇ·ñÒıÆğÊ§ºâ
+	//3.æ£€æŸ¥æ˜¯å¦å¼•èµ·å¤±è¡¡
 	int balance = getBalance(tree);
-	//4.ÈôÊ§ºâ£¬½øĞĞĞı×ªµ÷Õû
-	//ÓÒÓÒÇé¿ö£¬×óĞı
+	//4.è‹¥å¤±è¡¡ï¼Œè¿›è¡Œæ—‹è½¬è°ƒæ•´
+	//å³å³æƒ…å†µï¼Œå·¦æ—‹
 	if (balance < -1 && tree->right->data < X)
 	{
 		return leftRotate(tree);
 	}
-	//×ó×óÇé¿ö£¬ÓÒĞı
+	//å·¦å·¦æƒ…å†µï¼Œå³æ—‹
 	if (balance > 1 && tree->left->data > X)
 	{
 		return rightRotate(tree);
 	}
-	//ÓÒ×óÇé¿ö£¬ÓÒ×óĞı
+	//å³å·¦æƒ…å†µï¼Œå³å·¦æ—‹
 	if (balance < -1 && tree->right->data > X)
 	{
 		tree->right = rightRotate(tree->right);
 		return leftRotate(tree);
 	}
-	//×óÓÒÇé¿ö£¬×óÓÒĞı
+	//å·¦å³æƒ…å†µï¼Œå·¦å³æ—‹
 	if (balance > 1 && tree->left->data < X)
 	{
 		tree->left = leftRotate(tree->left);
@@ -241,7 +241,7 @@ AVLTree deleteNode(AVLTree tree, ElementType X)
 }
 
 
-//ÖĞĞò±éÀú´òÓ¡
+//ä¸­åºéå†æ‰“å°
 void PrintMidOT(AVLTree tree)
 {
 	if (tree != NULL)
@@ -252,7 +252,7 @@ void PrintMidOT(AVLTree tree)
 	}
 }
 
-//Ç°Ğò±éÀú´òÓ¡
+//å‰åºéå†æ‰“å°
 void PrintPreOT(AVLTree tree)
 {
 	if (tree != NULL)
@@ -263,7 +263,7 @@ void PrintPreOT(AVLTree tree)
 	}
 }
 
-//ºóĞò±éÀú´òÓ¡
+//ååºéå†æ‰“å°
 void PrintPostOT(AVLTree tree)
 {
 	if (tree != NULL)
@@ -274,7 +274,7 @@ void PrintPostOT(AVLTree tree)
 	}
 }
 
-//°´Öµ²éÕÒ
+//æŒ‰å€¼æŸ¥æ‰¾
 AVLTree searchNode(AVLTree tree, ElementType X)
 {
 	if (tree == NULL)
@@ -295,7 +295,7 @@ AVLTree searchNode(AVLTree tree, ElementType X)
 	}
 }
 
-//ÊÍ·ÅAVLÊ÷
+//é‡Šæ”¾AVLæ ‘
 void freeAVLTree(AVLTree tree)
 {
 	if (tree != NULL)
@@ -307,14 +307,14 @@ void freeAVLTree(AVLTree tree)
 	}
 }
 
-//²âÊÔº¯Êı
+//æµ‹è¯•å‡½æ•°
 void testAVLTree() 
 {
 	AVLTree root = NULL;
-	printf("=== AVLÊ÷²âÊÔ ===\n\n");
+	printf("=== AVLæ ‘æµ‹è¯• ===\n\n");
 
-	// ²âÊÔ1: ²åÈë½Úµã
-	printf("1. ²åÈë½Úµã²âÊÔ:\n");
+	// æµ‹è¯•1: æ’å…¥èŠ‚ç‚¹
+	printf("1. æ’å…¥èŠ‚ç‚¹æµ‹è¯•:\n");
 	root = insertNode(root, 10);
 	root = insertNode(root, 20);
 	root = insertNode(root, 30);
@@ -322,94 +322,94 @@ void testAVLTree()
 	root = insertNode(root, 50);
 	root = insertNode(root, 25);
 
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
-	printf("Ç°Ğò±éÀú: "); PrintPreOT(root); printf("\n");
-	printf("ºóĞò±éÀú: "); PrintPostOT(root); printf("\n");
-	printf("Ê÷¸ß¶È: %d\n", getHeight(root));
-	printf("¸ù½ÚµãÆ½ºâÒò×Ó: %d\n", getBalance(root));
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
+	printf("å‰åºéå†: "); PrintPreOT(root); printf("\n");
+	printf("ååºéå†: "); PrintPostOT(root); printf("\n");
+	printf("æ ‘é«˜åº¦: %d\n", getHeight(root));
+	printf("æ ¹èŠ‚ç‚¹å¹³è¡¡å› å­: %d\n", getBalance(root));
 	printf("\n");
 
-	// ²âÊÔ2: ËÑË÷½Úµã
-	printf("2. ËÑË÷½Úµã²âÊÔ:\n");
+	// æµ‹è¯•2: æœç´¢èŠ‚ç‚¹
+	printf("2. æœç´¢èŠ‚ç‚¹æµ‹è¯•:\n");
 	AVLTree searchResult = searchNode(root, 30);
 	if (searchResult != NULL) {
-		printf("ÕÒµ½½Úµã 30\n");
+		printf("æ‰¾åˆ°èŠ‚ç‚¹ 30\n");
 	}
 	else {
-		printf("Î´ÕÒµ½½Úµã 30\n");
+		printf("æœªæ‰¾åˆ°èŠ‚ç‚¹ 30\n");
 	}
 
 	searchResult = searchNode(root, 100);
 	if (searchResult != NULL) {
-		printf("ÕÒµ½½Úµã 100\n");
+		printf("æ‰¾åˆ°èŠ‚ç‚¹ 100\n");
 	}
 	else {
-		printf("Î´ÕÒµ½½Úµã 100\n");
+		printf("æœªæ‰¾åˆ°èŠ‚ç‚¹ 100\n");
 	}
 	printf("\n");
 
-	// ²âÊÔ3: É¾³ı½Úµã
-	printf("3. É¾³ı½Úµã²âÊÔ:\n");
-	printf("É¾³ı½Úµã 10:\n");
+	// æµ‹è¯•3: åˆ é™¤èŠ‚ç‚¹
+	printf("3. åˆ é™¤èŠ‚ç‚¹æµ‹è¯•:\n");
+	printf("åˆ é™¤èŠ‚ç‚¹ 10:\n");
 	root = deleteNode(root, 10);
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
-	printf("Ê÷¸ß¶È: %d\n", getHeight(root));
-	printf("¸ù½ÚµãÆ½ºâÒò×Ó: %d\n", getBalance(root));
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
+	printf("æ ‘é«˜åº¦: %d\n", getHeight(root));
+	printf("æ ¹èŠ‚ç‚¹å¹³è¡¡å› å­: %d\n", getBalance(root));
 
-	printf("É¾³ı½Úµã 50:\n");
+	printf("åˆ é™¤èŠ‚ç‚¹ 50:\n");
 	root = deleteNode(root, 50);
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
-	printf("Ê÷¸ß¶È: %d\n", getHeight(root));
-	printf("¸ù½ÚµãÆ½ºâÒò×Ó: %d\n", getBalance(root));
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
+	printf("æ ‘é«˜åº¦: %d\n", getHeight(root));
+	printf("æ ¹èŠ‚ç‚¹å¹³è¡¡å› å­: %d\n", getBalance(root));
 
-	printf("É¾³ı½Úµã 25:\n");
+	printf("åˆ é™¤èŠ‚ç‚¹ 25:\n");
 	root = deleteNode(root, 25);
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
-	printf("Ê÷¸ß¶È: %d\n", getHeight(root));
-	printf("¸ù½ÚµãÆ½ºâÒò×Ó: %d\n", getBalance(root));
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
+	printf("æ ‘é«˜åº¦: %d\n", getHeight(root));
+	printf("æ ¹èŠ‚ç‚¹å¹³è¡¡å› å­: %d\n", getBalance(root));
 	printf("\n");
 
-	// ²âÊÔ4: ²åÈëÖØ¸´½Úµã
-	printf("4. ²åÈëÖØ¸´½Úµã²âÊÔ:\n");
-	root = insertNode(root, 40); // ÖØ¸´²åÈë40
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
+	// æµ‹è¯•4: æ’å…¥é‡å¤èŠ‚ç‚¹
+	printf("4. æ’å…¥é‡å¤èŠ‚ç‚¹æµ‹è¯•:\n");
+	root = insertNode(root, 40); // é‡å¤æ’å…¥40
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
 	printf("\n");
 
-	// ²âÊÔ5: É¾³ı²»´æÔÚµÄ½Úµã
-	printf("5. É¾³ı²»´æÔÚµÄ½Úµã²âÊÔ:\n");
-	root = deleteNode(root, 100); // É¾³ı²»´æÔÚµÄ½Úµã
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
+	// æµ‹è¯•5: åˆ é™¤ä¸å­˜åœ¨çš„èŠ‚ç‚¹
+	printf("5. åˆ é™¤ä¸å­˜åœ¨çš„èŠ‚ç‚¹æµ‹è¯•:\n");
+	root = deleteNode(root, 100); // åˆ é™¤ä¸å­˜åœ¨çš„èŠ‚ç‚¹
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
 	printf("\n");
 
-	// ²âÊÔ6: ¿ÕÊ÷²âÊÔ
-	printf("6. ¿ÕÊ÷²âÊÔ:\n");
+	// æµ‹è¯•6: ç©ºæ ‘æµ‹è¯•
+	printf("6. ç©ºæ ‘æµ‹è¯•:\n");
 	AVLTree emptyTree = NULL;
-	printf("ÖĞĞò±éÀú¿ÕÊ÷: "); PrintMidOT(emptyTree); printf("\n");
-	printf("ËÑË÷¿ÕÊ÷: %s\n", searchNode(emptyTree, 10) ? "ÕÒµ½" : "Î´ÕÒµ½");
-	emptyTree = deleteNode(emptyTree, 10); // É¾³ı¿ÕÊ÷ÖĞµÄ½Úµã
-	printf("É¾³ı¿ÕÊ÷ÖĞµÄ½Úµãºó: "); PrintMidOT(emptyTree); printf("\n");
+	printf("ä¸­åºéå†ç©ºæ ‘: "); PrintMidOT(emptyTree); printf("\n");
+	printf("æœç´¢ç©ºæ ‘: %s\n", searchNode(emptyTree, 10) ? "æ‰¾åˆ°" : "æœªæ‰¾åˆ°");
+	emptyTree = deleteNode(emptyTree, 10); // åˆ é™¤ç©ºæ ‘ä¸­çš„èŠ‚ç‚¹
+	printf("åˆ é™¤ç©ºæ ‘ä¸­çš„èŠ‚ç‚¹å: "); PrintMidOT(emptyTree); printf("\n");
 	printf("\n");
 
-	// ²âÊÔ7: ´óÁ¿²åÈëºÍÉ¾³ı²âÊÔ
-	printf("7. ´óÁ¿²åÈëºÍÉ¾³ı²âÊÔ:\n");
+	// æµ‹è¯•7: å¤§é‡æ’å…¥å’Œåˆ é™¤æµ‹è¯•
+	printf("7. å¤§é‡æ’å…¥å’Œåˆ é™¤æµ‹è¯•:\n");
 	AVLTree largeTree = NULL;
 	for (int i = 0; i < 10; i++) {
 		largeTree = insertNode(largeTree, i);
 	}
-	printf("²åÈë0-9ºóÖĞĞò±éÀú: "); PrintMidOT(largeTree); printf("\n");
-	printf("Ê÷¸ß¶È: %d\n", getHeight(largeTree));
+	printf("æ’å…¥0-9åä¸­åºéå†: "); PrintMidOT(largeTree); printf("\n");
+	printf("æ ‘é«˜åº¦: %d\n", getHeight(largeTree));
 
 	for (int i = 0; i < 10; i += 2) {
 		largeTree = deleteNode(largeTree, i);
 	}
-	printf("É¾³ıÅ¼ÊıºóÖĞĞò±éÀú: "); PrintMidOT(largeTree); printf("\n");
-	printf("Ê÷¸ß¶È: %d\n", getHeight(largeTree));
+	printf("åˆ é™¤å¶æ•°åä¸­åºéå†: "); PrintMidOT(largeTree); printf("\n");
+	printf("æ ‘é«˜åº¦: %d\n", getHeight(largeTree));
 	freeAVLTree(largeTree);
 	printf("\n");
 
-	// ÊÍ·ÅÄÚ´æ
+	// é‡Šæ”¾å†…å­˜
 	freeAVLTree(root);
-	printf("²âÊÔÍê³É£¬ÄÚ´æÒÑÊÍ·Å¡£\n");
+	printf("æµ‹è¯•å®Œæˆï¼Œå†…å­˜å·²é‡Šæ”¾ã€‚\n");
 }
 
 
