@@ -1,33 +1,33 @@
-//¶Ñ¡ª¡ªÍêÈ«¶ş²æÊ÷ÊµÏÖ
+//å †â€”â€”å®Œå…¨äºŒå‰æ ‘å®ç°
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
-#define Maxdata 100000;  //¶¨Òå¡°ÉÚ±ø¡±µÄÖµ
+#define Maxdata 100000;  //å®šä¹‰â€œå“¨å…µâ€çš„å€¼
 
 typedef int ElementType;
 
-//×î´ó¶ÑµÄ½á¹¹Ìå
+//æœ€å¤§å †çš„ç»“æ„ä½“
 typedef struct Node* Heap;
 struct Node
 {
-	ElementType* data;  //´æ´¢¶ÑÔªËØµÄÊı×é
-	int size;  //¶ÑµÄµ±Ç°ÔªËØ¸öÊı
-	int capacity;  //×î´ó¶ÑµÄÈİÁ¿
+	ElementType* data;  //å­˜å‚¨å †å…ƒç´ çš„æ•°ç»„
+	int size;  //å †çš„å½“å‰å…ƒç´ ä¸ªæ•°
+	int capacity;  //æœ€å¤§å †çš„å®¹é‡
 };
 
-//º¯ÊıÉùÃ÷
-Heap createHeap(int capacity);  //½¨Á¢Ò»¸ö¶Ñ
-bool isFull(Heap heap);  //ÅĞ¶Ï¶ÑÊÇ·ñÒÑÂú
-bool isEmpty(Heap heap);  //ÅĞ¶Ï¶ÑÊÇ·ñÎª¿Õ
-Heap insertData(Heap heap, ElementType X);  //²åÈëÔªËØ
-ElementType deleteData(Heap heap);  //É¾³ıÔªËØ£¨´Ó¶ÑÖĞÈ¡³ö×î´óµÄÔªËØ£©
-int getHeight(Heap heap);  //»ñÈ¡¸ß¶È
-int getSize(Heap heap);  //»ñÈ¡ÔªËØ¸öÊı
-void printHeap(Heap heap);  //´òÓ¡¶Ñ
-void freeHeap(Heap heap);  //ÊÍ·Å¶Ñ
+//å‡½æ•°å£°æ˜
+Heap createHeap(int capacity);  //å»ºç«‹ä¸€ä¸ªå †
+bool isFull(Heap heap);  //åˆ¤æ–­å †æ˜¯å¦å·²æ»¡
+bool isEmpty(Heap heap);  //åˆ¤æ–­å †æ˜¯å¦ä¸ºç©º
+Heap insertData(Heap heap, ElementType X);  //æ’å…¥å…ƒç´ 
+ElementType deleteData(Heap heap);  //åˆ é™¤å…ƒç´ ï¼ˆä»å †ä¸­å–å‡ºæœ€å¤§çš„å…ƒç´ ï¼‰
+int getHeight(Heap heap);  //è·å–é«˜åº¦
+int getSize(Heap heap);  //è·å–å…ƒç´ ä¸ªæ•°
+void printHeap(Heap heap);  //æ‰“å°å †
+void freeHeap(Heap heap);  //é‡Šæ”¾å †
 
-//½¨Á¢Ò»¸ö¶Ñ
+//å»ºç«‹ä¸€ä¸ªå †
 Heap createHeap(int capacity)
 {
 	Heap heap = (Heap)malloc(sizeof(struct Node));
@@ -38,55 +38,55 @@ Heap createHeap(int capacity)
 	heap->size = 0;
 	heap->capacity = capacity;
 	heap->data = (ElementType*)malloc(sizeof(ElementType) * (capacity + 1));
-	heap->data[0] = Maxdata;  //¶¨ÒåÊı×éµÄµÚÒ»¸öÔªËØÎª¡°ÉÚ±ø¡±£¬±ÈÊı×éÀïÃæËùÓĞÔªËØ¶¼´ó
+	heap->data[0] = Maxdata;  //å®šä¹‰æ•°ç»„çš„ç¬¬ä¸€ä¸ªå…ƒç´ ä¸ºâ€œå“¨å…µâ€ï¼Œæ¯”æ•°ç»„é‡Œé¢æ‰€æœ‰å…ƒç´ éƒ½å¤§
 	return heap;
 }
 
-//ÅĞ¶Ï¶ÑÊÇ·ñÒÑÂú
+//åˆ¤æ–­å †æ˜¯å¦å·²æ»¡
 bool isFull(Heap heap)
 {
 	return heap->size == heap->capacity;
 }
 
-//ÅĞ¶Ï¶ÑÊÇ·ñÎª¿Õ
+//åˆ¤æ–­å †æ˜¯å¦ä¸ºç©º
 bool isEmpty(Heap heap)
 {
 	return heap->size == 0;
 }
 
-//²åÈëÔªËØ
+//æ’å…¥å…ƒç´ 
 Heap insertData(Heap heap, ElementType X)
 {
-	//1.ÅĞ¶Ï¶ÑÊÇ·ñÒÑÂú
+	//1.åˆ¤æ–­å †æ˜¯å¦å·²æ»¡
 	if (isFull(heap))
 	{
-		printf("¶ÑÒÑÂú£¡²»¿ÉÔÙ²åÈëÔªËØ£¡\n");
+		printf("å †å·²æ»¡ï¼ä¸å¯å†æ’å…¥å…ƒç´ ï¼\n");
 		return heap;
 	}
-	//2.ÅĞ¶Ï¶ÑÊÇ·ñÎª¿Õ
+	//2.åˆ¤æ–­å †æ˜¯å¦ä¸ºç©º
 	if (isEmpty(heap))
 	{
 		heap->data[1] = X;
 		heap->size++;
 		return heap;
 	}
-	//3.ÕÒµ½Òª²åÈëµÄÎ»ÖÃ
+	//3.æ‰¾åˆ°è¦æ’å…¥çš„ä½ç½®
 	int i = ++heap->size;
 	for (i; X > heap->data[i / 2] && i > 1; i = i / 2)
 	{
 		heap->data[i] = heap->data[i / 2];
 	}
-	//4.²åÈëÔªËØ²¢·µ»Ø
+	//4.æ’å…¥å…ƒç´ å¹¶è¿”å›
 	heap->data[i] = X;
 	return heap;
 }
 
-//É¾³ıÔªËØ£¨´Ó¶ÑÖĞÈ¡³ö×î´óµÄÔªËØ£©
+//åˆ é™¤å…ƒç´ ï¼ˆä»å †ä¸­å–å‡ºæœ€å¤§çš„å…ƒç´ ï¼‰
 ElementType deleteData(Heap heap)
 {
 	if (isEmpty(heap))
 	{
-		printf("¶ÑÒÑ¿Õ£¡²»¿ÉÉ¾³ıÔªËØ£¡\n");
+		printf("å †å·²ç©ºï¼ä¸å¯åˆ é™¤å…ƒç´ ï¼\n");
 		return -1;
 	}
 	ElementType Max = heap->data[1];
@@ -112,7 +112,7 @@ ElementType deleteData(Heap heap)
 	return Max;
  }
 
-//»ñÈ¡¸ß¶È
+//è·å–é«˜åº¦
 int getHeight(Heap heap)
 {
 	if (heap->size == 0)
@@ -128,16 +128,16 @@ int getHeight(Heap heap)
 	return height;
 }
 
-//»ñÈ¡ÔªËØ¸öÊı
+//è·å–å…ƒç´ ä¸ªæ•°
 int getSize(Heap heap)
 {
 	return heap->size;
 }
 
-//´òÓ¡¶Ñ
+//æ‰“å°å †
 void printHeap(Heap heap)
 {
-	printf("´òÓ¡¶Ñ£º");
+	printf("æ‰“å°å †ï¼š");
 	for (int i = 1; i <= heap->size; i++)
 	{
 		printf("%d ", heap->data[i]);
@@ -145,7 +145,7 @@ void printHeap(Heap heap)
 	printf("\n");
 }
 
-//ÊÍ·Å¶Ñ
+//é‡Šæ”¾å †
 void freeHeap(Heap heap)
 {
 	free(heap->data);
@@ -154,62 +154,62 @@ void freeHeap(Heap heap)
 	heap = NULL;
 }
 
-// ²âÊÔº¯Êı
+// æµ‹è¯•å‡½æ•°
 void testHeap() 
 {
-	printf("=== ¿ªÊ¼²âÊÔ¶Ñ ===\n");
+	printf("=== å¼€å§‹æµ‹è¯•å † ===\n");
 
-	// ²âÊÔ1: ´´½¨¶Ñ
-	printf("\n1. ²âÊÔ´´½¨¶Ñ:\n");
+	// æµ‹è¯•1: åˆ›å»ºå †
+	printf("\n1. æµ‹è¯•åˆ›å»ºå †:\n");
 	Heap heap = createHeap(10);
 	if (heap != NULL) 
 	{
-		printf("¶Ñ´´½¨³É¹¦£¬ÈİÁ¿: %d\n", heap->capacity);
+		printf("å †åˆ›å»ºæˆåŠŸï¼Œå®¹é‡: %d\n", heap->capacity);
 	}
 	else 
 	{
-		printf("¶Ñ´´½¨Ê§°Ü\n");
+		printf("å †åˆ›å»ºå¤±è´¥\n");
 		return;
 	}
 
-	// ²âÊÔ2: ²âÊÔ¿Õ¶Ñ²Ù×÷
-	printf("\n2. ²âÊÔ¿Õ¶Ñ²Ù×÷:\n");
-	printf("¶ÑÊÇ·ñÎª¿Õ: %s\n", isEmpty(heap) ? "ÊÇ" : "·ñ");
-	printf("³¢ÊÔ´Ó¿Õ¶ÑÉ¾³ıÔªËØ: ");
+	// æµ‹è¯•2: æµ‹è¯•ç©ºå †æ“ä½œ
+	printf("\n2. æµ‹è¯•ç©ºå †æ“ä½œ:\n");
+	printf("å †æ˜¯å¦ä¸ºç©º: %s\n", isEmpty(heap) ? "æ˜¯" : "å¦");
+	printf("å°è¯•ä»ç©ºå †åˆ é™¤å…ƒç´ : ");
 	ElementType deleted = deleteData(heap);
 	if (deleted == -1) 
 	{
-		printf("ÕıÈ··µ»Ø´íÎóÖµ\n");
+		printf("æ­£ç¡®è¿”å›é”™è¯¯å€¼\n");
 	}
 
-	// ²âÊÔ3: ²åÈëÔªËØ
-	printf("\n3. ²âÊÔ²åÈëÔªËØ:\n");
+	// æµ‹è¯•3: æ’å…¥å…ƒç´ 
+	printf("\n3. æµ‹è¯•æ’å…¥å…ƒç´ :\n");
 	int testData[] = { 10, 20, 15, 30, 5, 25, 35, 40, 12, 8 };
 	for (int i = 0; i < 10; i++) 
 	{
 		heap = insertData(heap, testData[i]);
-		printf("²åÈë %d ºó¶Ñ´óĞ¡: %d\n", testData[i], getSize(heap));
+		printf("æ’å…¥ %d åå †å¤§å°: %d\n", testData[i], getSize(heap));
 	}
 	printHeap(heap);
-	printf("¶Ñ¸ß¶È: %d\n", getHeight(heap));
+	printf("å †é«˜åº¦: %d\n", getHeight(heap));
 
-	// ²âÊÔ4: ²âÊÔ¶ÑÂúÇé¿ö
-	printf("\n4. ²âÊÔ¶ÑÂúÇé¿ö:\n");
-	printf("¶ÑÊÇ·ñÒÑÂú: %s\n", isFull(heap) ? "ÊÇ" : "·ñ");
-	printf("³¢ÊÔ²åÈëµÚ11¸öÔªËØ: ");
-	heap = insertData(heap, 50); // Ó¦¸ÃÊ§°Ü
+	// æµ‹è¯•4: æµ‹è¯•å †æ»¡æƒ…å†µ
+	printf("\n4. æµ‹è¯•å †æ»¡æƒ…å†µ:\n");
+	printf("å †æ˜¯å¦å·²æ»¡: %s\n", isFull(heap) ? "æ˜¯" : "å¦");
+	printf("å°è¯•æ’å…¥ç¬¬11ä¸ªå…ƒç´ : ");
+	heap = insertData(heap, 50); // åº”è¯¥å¤±è´¥
 
-	// ²âÊÔ5: É¾³ıÔªËØ
-	printf("\n5. ²âÊÔÉ¾³ıÔªËØ:\n");
+	// æµ‹è¯•5: åˆ é™¤å…ƒç´ 
+	printf("\n5. æµ‹è¯•åˆ é™¤å…ƒç´ :\n");
 	for (int i = 0; i < 5; i++) 
 	{
 		ElementType max = deleteData(heap);
-		printf("É¾³ıµÄ×î´óÔªËØ: %d, Ê£Óà´óĞ¡: %d\n", max, getSize(heap));
+		printf("åˆ é™¤çš„æœ€å¤§å…ƒç´ : %d, å‰©ä½™å¤§å°: %d\n", max, getSize(heap));
 	}
 	printHeap(heap);
 
-	// ²âÊÔ6: ÔÙ´Î²åÈëºÍÉ¾³ı
-	printf("\n6. ÔÙ´Î²åÈëºÍÉ¾³ı:\n");
+	// æµ‹è¯•6: å†æ¬¡æ’å…¥å’Œåˆ é™¤
+	printf("\n6. å†æ¬¡æ’å…¥å’Œåˆ é™¤:\n");
 	heap = insertData(heap, 100);
 	heap = insertData(heap, 1);
 	printHeap(heap);
@@ -217,15 +217,15 @@ void testHeap()
 	while (!isEmpty(heap)) 
 	{
 		ElementType max = deleteData(heap);
-		printf("É¾³ı: %d, Ê£Óà´óĞ¡: %d\n", max, getSize(heap));
+		printf("åˆ é™¤: %d, å‰©ä½™å¤§å°: %d\n", max, getSize(heap));
 	}
 
-	// ²âÊÔ7: ÊÍ·Å¶Ñ
-	printf("\n7. ÊÍ·Å¶Ñ:\n");
+	// æµ‹è¯•7: é‡Šæ”¾å †
+	printf("\n7. é‡Šæ”¾å †:\n");
 	freeHeap(heap);
-	printf("¶ÑÒÑÊÍ·Å\n");
+	printf("å †å·²é‡Šæ”¾\n");
 
-	printf("\n=== ²âÊÔÍê³É ===\n");
+	printf("\n=== æµ‹è¯•å®Œæˆ ===\n");
 }
 
 int main() 
