@@ -1,4 +1,4 @@
-//ÉìÕ¹Ê÷SplayTree
+//ä¼¸å±•æ ‘SplayTree
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -13,26 +13,26 @@ struct Node
 	SplayTree right;
 };
 
-//º¯ÊıÉùÃ÷
-SplayTree createNode(ElementType X);  //´´½¨ĞÂ½áµã
-SplayTree rightRotate(SplayTree tree);  //ÓÒĞı
-SplayTree leftRotate(SplayTree tree);  //×óĞı
-SplayTree splay(SplayTree tree, ElementType X);  //ÉìÕ¹²Ù×÷£º½«ÖµÎªXµÄÔªËØÒÆµ½¸ù½áµã
-SplayTree searchNode(SplayTree tree, ElementType X);  //²éÕÒ²Ù×÷£ºÏÈ²éÕÒÔÙ°Ñ¸ÃÖµÒÆµ½¸ù½áµã
-SplayTree insertNode(SplayTree tree, ElementType X);  //²åÈë²Ù×÷£ºĞÂ²åÈëµÄÔªËØ×÷Îª¸ù½áµã
-SplayTree deleteNode(SplayTree tree, ElementType X);  //É¾³ı²Ù×÷
-void PrintMidOT(SplayTree tree);  //ÖĞĞò±éÀú´òÓ¡
-void PrintPreOT(SplayTree tree);  //Ç°Ğò±éÀú´òÓ¡
-void PrintPostOT(SplayTree tree);  //ºóĞò±éÀú´òÓ¡
-void freeTree(SplayTree tree);  //ÊÍ·ÅÄÚ´æ
+//å‡½æ•°å£°æ˜
+SplayTree createNode(ElementType X);  //åˆ›å»ºæ–°ç»“ç‚¹
+SplayTree rightRotate(SplayTree tree);  //å³æ—‹
+SplayTree leftRotate(SplayTree tree);  //å·¦æ—‹
+SplayTree splay(SplayTree tree, ElementType X);  //ä¼¸å±•æ“ä½œï¼šå°†å€¼ä¸ºXçš„å…ƒç´ ç§»åˆ°æ ¹ç»“ç‚¹
+SplayTree searchNode(SplayTree tree, ElementType X);  //æŸ¥æ‰¾æ“ä½œï¼šå…ˆæŸ¥æ‰¾å†æŠŠè¯¥å€¼ç§»åˆ°æ ¹ç»“ç‚¹
+SplayTree insertNode(SplayTree tree, ElementType X);  //æ’å…¥æ“ä½œï¼šæ–°æ’å…¥çš„å…ƒç´ ä½œä¸ºæ ¹ç»“ç‚¹
+SplayTree deleteNode(SplayTree tree, ElementType X);  //åˆ é™¤æ“ä½œ
+void PrintMidOT(SplayTree tree);  //ä¸­åºéå†æ‰“å°
+void PrintPreOT(SplayTree tree);  //å‰åºéå†æ‰“å°
+void PrintPostOT(SplayTree tree);  //ååºéå†æ‰“å°
+void freeTree(SplayTree tree);  //é‡Šæ”¾å†…å­˜
 
-//´´½¨ĞÂ½áµã
+//åˆ›å»ºæ–°ç»“ç‚¹
 SplayTree createNode(ElementType X)
 {
 	SplayTree root = (SplayTree)malloc(sizeof(struct Node));
 	if (root == NULL)
 	{
-		printf("ÄÚ´æ·ÖÅäÊ§°Ü£¬½¨Á¢ĞÂ½áµãÊ§°Ü£¡\n");
+		printf("å†…å­˜åˆ†é…å¤±è´¥ï¼Œå»ºç«‹æ–°ç»“ç‚¹å¤±è´¥ï¼\n");
 		return NULL;
 	}
 	root->data = X;
@@ -41,7 +41,7 @@ SplayTree createNode(ElementType X)
 	return root;
 }
 
-//ÓÒĞı
+//å³æ—‹
 SplayTree rightRotate(SplayTree tree)
 {
 	SplayTree tree_left = tree->left;
@@ -51,7 +51,7 @@ SplayTree rightRotate(SplayTree tree)
 	return tree_left;
 }
 
-//×óĞı
+//å·¦æ—‹
 SplayTree leftRotate(SplayTree tree)
 {
 	SplayTree tree_right = tree->right;
@@ -61,28 +61,28 @@ SplayTree leftRotate(SplayTree tree)
 	return tree_right;
 }
 
-//ÉìÕ¹²Ù×÷£º½«ÖµÎªXµÄÔªËØÒÆµ½¸ù½áµã
+//ä¼¸å±•æ“ä½œï¼šå°†å€¼ä¸ºXçš„å…ƒç´ ç§»åˆ°æ ¹ç»“ç‚¹
 SplayTree splay(SplayTree tree, ElementType X)
 {
-	//ÖµÎª¸ù½áµã»òÕÒ²»µ½Öµ
+	//å€¼ä¸ºæ ¹ç»“ç‚¹æˆ–æ‰¾ä¸åˆ°å€¼
 	if (tree == NULL || tree->data == X)
 	{
 		return tree;
 	}
-	//ÖµÔÚ×ó×ÓÊ÷ÀïÃæ
+	//å€¼åœ¨å·¦å­æ ‘é‡Œé¢
 	if (tree->data > X)
 	{
 		if (tree->left == NULL)
 		{
 			return tree;
 		}
-		//Zig-Zig×ó×óÇé¿ö
+		//Zig-Zigå·¦å·¦æƒ…å†µ
 		if (tree->left->data > X)
 		{
 			tree->left->left = splay(tree->left->left, X);
 			tree = rightRotate(tree);
 		}
-		//Zig-Zag×óÓÒÇé¿ö
+		//Zig-Zagå·¦å³æƒ…å†µ
 		else if (tree->left->data < X)
 		{
 			tree->left->right = splay(tree->left->right, X);
@@ -91,17 +91,17 @@ SplayTree splay(SplayTree tree, ElementType X)
 				tree->left = leftRotate(tree->left);
 			}
 		}
-		//×îºóÔÙÓÒĞıÒ»´Î
+		//æœ€åå†å³æ—‹ä¸€æ¬¡
 		return (tree->left == NULL) ? tree : rightRotate(tree);
 	}
-	//ÖµÔÚÓÒ×ÓÊ÷ÀïÃæ
+	//å€¼åœ¨å³å­æ ‘é‡Œé¢
 	else if (tree->data < X)
 	{
 		if (tree->right == NULL)
 		{
 			return tree;
 		}
-		//Zag-ZigÓÒ×óÇé¿ö
+		//Zag-Zigå³å·¦æƒ…å†µ
 		if (tree->right->data > X)
 		{
 			tree->right->left = splay(tree->right->left, X);
@@ -110,46 +110,46 @@ SplayTree splay(SplayTree tree, ElementType X)
 				tree->right = rightRotate(tree->right);
 			}
 		}
-		//Zag-ZagÓÒÓÒÇé¿ö
+		//Zag-Zagå³å³æƒ…å†µ
 		else if (tree->right->data < X)
 		{
 			tree->right->right = splay(tree->right->right, X);
 			tree = leftRotate(tree);
 		}
-		//×îºóÔÙ×óĞıÒ»´Î
+		//æœ€åå†å·¦æ—‹ä¸€æ¬¡
 		return (tree->right == NULL) ? tree : leftRotate(tree);
 	}
 }
 
-//²éÕÒ²Ù×÷£ºÏÈ²éÕÒÔÙ°Ñ¸ÃÖµÒÆµ½¸ù½áµã
+//æŸ¥æ‰¾æ“ä½œï¼šå…ˆæŸ¥æ‰¾å†æŠŠè¯¥å€¼ç§»åˆ°æ ¹ç»“ç‚¹
 SplayTree searchNode(SplayTree tree, ElementType X)
 {
 	return splay(tree, X);
 }
 
-//²åÈë²Ù×÷£ºĞÂ²åÈëµÄÔªËØ×÷Îª¸ù½áµã
+//æ’å…¥æ“ä½œï¼šæ–°æ’å…¥çš„å…ƒç´ ä½œä¸ºæ ¹ç»“ç‚¹
 SplayTree insertNode(SplayTree tree, ElementType X)
 {
 	if (tree == NULL)
 	{
 		return createNode(X);
 	}
-	//½«Öµ×î½Ó½üXµÄ½áµã°áµ½¸ù½áµã
+	//å°†å€¼æœ€æ¥è¿‘Xçš„ç»“ç‚¹æ¬åˆ°æ ¹ç»“ç‚¹
 	tree = splay(tree, X);
-	//Èç¹û¸ù½áµãÖµÎªX£¬Ö±½Ó·µ»Ø
+	//å¦‚æœæ ¹ç»“ç‚¹å€¼ä¸ºXï¼Œç›´æ¥è¿”å›
 	if (tree->data == X)
 	{
 		return tree;
 	}
 	SplayTree newNode = createNode(X);
-	//Èç¹û²åÈëµÄÖµĞ¡ÓÚ¸ùÖµ£¬½«ĞÂ½áµã×÷Îª¸ù½áµã£¬Ô­¸ù½áµã×÷ÎªÓÒ×ÓÊ÷
+	//å¦‚æœæ’å…¥çš„å€¼å°äºæ ¹å€¼ï¼Œå°†æ–°ç»“ç‚¹ä½œä¸ºæ ¹ç»“ç‚¹ï¼ŒåŸæ ¹ç»“ç‚¹ä½œä¸ºå³å­æ ‘
 	if (tree->data > X)
 	{
 		newNode->right = tree;
 		newNode->left = tree->left;
 		tree->left = NULL;
 	}
-	//Èç¹û²åÈëµÄÖµ´óÓÚ¸ùÖµ£¬½«ĞÂ½áµã×÷Îª¸ù½áµã£¬Ô­¸ù½áµã×÷Îª×ó×ÓÊ÷
+	//å¦‚æœæ’å…¥çš„å€¼å¤§äºæ ¹å€¼ï¼Œå°†æ–°ç»“ç‚¹ä½œä¸ºæ ¹ç»“ç‚¹ï¼ŒåŸæ ¹ç»“ç‚¹ä½œä¸ºå·¦å­æ ‘
 	else if (tree->data < X)
 	{
 		newNode->left = tree;
@@ -159,21 +159,21 @@ SplayTree insertNode(SplayTree tree, ElementType X)
 	return newNode;
 }
 
-//É¾³ı²Ù×÷
+//åˆ é™¤æ“ä½œ
 SplayTree deleteNode(SplayTree tree, ElementType X)
 {
 	if (tree == NULL)
 	{
 		return tree;
 	}
-	//½«Ä¿±êÖµ°áµ½¸ù½áµã
+	//å°†ç›®æ ‡å€¼æ¬åˆ°æ ¹ç»“ç‚¹
 	tree = splay(tree, X);
-	//Ä¿±êÖµ²»´æÔÚ
+	//ç›®æ ‡å€¼ä¸å­˜åœ¨
 	if (tree->data != X)
 	{
 		return tree;
 	}
-	//Öµ´æÔÚ£¬É¾³ı¸ù½áµã£¬½«×ó×ÓÊ÷µÄ×î´óÖµ×÷Îª¸ù½áµã£¬Ã»ÓĞ×ó×ÓÊ÷¾ÍÖ±½ÓÉ¾³ı¸ù½áµã
+	//å€¼å­˜åœ¨ï¼Œåˆ é™¤æ ¹ç»“ç‚¹ï¼Œå°†å·¦å­æ ‘çš„æœ€å¤§å€¼ä½œä¸ºæ ¹ç»“ç‚¹ï¼Œæ²¡æœ‰å·¦å­æ ‘å°±ç›´æ¥åˆ é™¤æ ¹ç»“ç‚¹
 	SplayTree current = tree;
 	if (tree->left == NULL)
 	{
@@ -189,7 +189,7 @@ SplayTree deleteNode(SplayTree tree, ElementType X)
 	return tree;
 }
 
-//ÖĞĞò±éÀú´òÓ¡
+//ä¸­åºéå†æ‰“å°
 void PrintMidOT(SplayTree tree)
 {
 	if (tree != NULL)
@@ -200,7 +200,7 @@ void PrintMidOT(SplayTree tree)
 	}
 }
 
-//Ç°Ğò±éÀú´òÓ¡
+//å‰åºéå†æ‰“å°
 void PrintPreOT(SplayTree tree)
 {
 	if (tree != NULL)
@@ -211,7 +211,7 @@ void PrintPreOT(SplayTree tree)
 	}
 }
 
-//ºóĞò±éÀú´òÓ¡
+//ååºéå†æ‰“å°
 void PrintPostOT(SplayTree tree)
 {
 	if (tree != NULL)
@@ -222,7 +222,7 @@ void PrintPostOT(SplayTree tree)
 	}
 }
 
-//ÊÍ·ÅÄÚ´æ
+//é‡Šæ”¾å†…å­˜
 void freeTree(SplayTree tree)
 {
 	if (tree != NULL)
@@ -234,14 +234,14 @@ void freeTree(SplayTree tree)
 	}
 }
 
-//²âÊÔº¯Êı
+//æµ‹è¯•å‡½æ•°
 void testSplayTree()
 {
 	SplayTree root = NULL;
-	printf("=== ÉìÕ¹Ê÷(Splay Tree)²âÊÔ ===\n\n");
+	printf("=== ä¼¸å±•æ ‘(Splay Tree)æµ‹è¯• ===\n\n");
 
-	// ²âÊÔ1: ²åÈë½Úµã
-	printf("1. ²åÈë½Úµã²âÊÔ:\n");
+	// æµ‹è¯•1: æ’å…¥èŠ‚ç‚¹
+	printf("1. æ’å…¥èŠ‚ç‚¹æµ‹è¯•:\n");
 	root = insertNode(root, 10);
 	root = insertNode(root, 20);
 	root = insertNode(root, 30);
@@ -249,93 +249,93 @@ void testSplayTree()
 	root = insertNode(root, 50);
 	root = insertNode(root, 25);
 
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
-	printf("Ç°Ğò±éÀú: "); PrintPreOT(root); printf("\n");
-	printf("ºóĞò±éÀú: "); PrintPostOT(root); printf("\n");
-	printf("µ±Ç°¸ù½Úµã: %d\n", root->data);
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
+	printf("å‰åºéå†: "); PrintPreOT(root); printf("\n");
+	printf("ååºéå†: "); PrintPostOT(root); printf("\n");
+	printf("å½“å‰æ ¹èŠ‚ç‚¹: %d\n", root->data);
 	printf("\n");
 
-	// ²âÊÔ2: ËÑË÷½Úµã
-	printf("2. ËÑË÷½Úµã²âÊÔ:\n");
+	// æµ‹è¯•2: æœç´¢èŠ‚ç‚¹
+	printf("2. æœç´¢èŠ‚ç‚¹æµ‹è¯•:\n");
 	SplayTree searchResult = searchNode(root, 30);
 	if (searchResult != NULL && searchResult->data == 30) {
-		printf("ÕÒµ½½Úµã 30£¬ÏÖÔÚ¸ù½ÚµãÊÇ: %d\n", searchResult->data);
+		printf("æ‰¾åˆ°èŠ‚ç‚¹ 30ï¼Œç°åœ¨æ ¹èŠ‚ç‚¹æ˜¯: %d\n", searchResult->data);
 	}
 	else {
-		printf("Î´ÕÒµ½½Úµã 30\n");
+		printf("æœªæ‰¾åˆ°èŠ‚ç‚¹ 30\n");
 	}
 
 	searchResult = searchNode(root, 100);
 	if (searchResult != NULL && searchResult->data == 100) {
-		printf("ÕÒµ½½Úµã 100£¬ÏÖÔÚ¸ù½ÚµãÊÇ: %d\n", searchResult->data);
+		printf("æ‰¾åˆ°èŠ‚ç‚¹ 100ï¼Œç°åœ¨æ ¹èŠ‚ç‚¹æ˜¯: %d\n", searchResult->data);
 	}
 	else {
-		printf("Î´ÕÒµ½½Úµã 100£¬µ±Ç°¸ù½ÚµãÊÇ: %d\n", root->data);
+		printf("æœªæ‰¾åˆ°èŠ‚ç‚¹ 100ï¼Œå½“å‰æ ¹èŠ‚ç‚¹æ˜¯: %d\n", root->data);
 	}
 	printf("\n");
 
-	// ²âÊÔ3: É¾³ı½Úµã
-	printf("3. É¾³ı½Úµã²âÊÔ:\n");
-	printf("É¾³ı½Úµã 10:\n");
+	// æµ‹è¯•3: åˆ é™¤èŠ‚ç‚¹
+	printf("3. åˆ é™¤èŠ‚ç‚¹æµ‹è¯•:\n");
+	printf("åˆ é™¤èŠ‚ç‚¹ 10:\n");
 	root = deleteNode(root, 10);
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
-	printf("µ±Ç°¸ù½Úµã: %d\n", root->data);
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
+	printf("å½“å‰æ ¹èŠ‚ç‚¹: %d\n", root->data);
 
-	printf("É¾³ı½Úµã 50:\n");
+	printf("åˆ é™¤èŠ‚ç‚¹ 50:\n");
 	root = deleteNode(root, 50);
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
-	printf("µ±Ç°¸ù½Úµã: %d\n", root->data);
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
+	printf("å½“å‰æ ¹èŠ‚ç‚¹: %d\n", root->data);
 
-	printf("É¾³ı½Úµã 25:\n");
+	printf("åˆ é™¤èŠ‚ç‚¹ 25:\n");
 	root = deleteNode(root, 25);
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
-	printf("µ±Ç°¸ù½Úµã: %d\n", root->data);
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
+	printf("å½“å‰æ ¹èŠ‚ç‚¹: %d\n", root->data);
 	printf("\n");
 
-	// ²âÊÔ4: ²åÈëÖØ¸´½Úµã
-	printf("4. ²åÈëÖØ¸´½Úµã²âÊÔ:\n");
-	root = insertNode(root, 40); // ÖØ¸´²åÈë40
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
-	printf("µ±Ç°¸ù½Úµã: %d\n", root->data);
+	// æµ‹è¯•4: æ’å…¥é‡å¤èŠ‚ç‚¹
+	printf("4. æ’å…¥é‡å¤èŠ‚ç‚¹æµ‹è¯•:\n");
+	root = insertNode(root, 40); // é‡å¤æ’å…¥40
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
+	printf("å½“å‰æ ¹èŠ‚ç‚¹: %d\n", root->data);
 	printf("\n");
 
-	// ²âÊÔ5: É¾³ı²»´æÔÚµÄ½Úµã
-	printf("5. É¾³ı²»´æÔÚµÄ½Úµã²âÊÔ:\n");
-	root = deleteNode(root, 100); // É¾³ı²»´æÔÚµÄ½Úµã
-	printf("ÖĞĞò±éÀú: "); PrintMidOT(root); printf("\n");
-	printf("µ±Ç°¸ù½Úµã: %d\n", root->data);
+	// æµ‹è¯•5: åˆ é™¤ä¸å­˜åœ¨çš„èŠ‚ç‚¹
+	printf("5. åˆ é™¤ä¸å­˜åœ¨çš„èŠ‚ç‚¹æµ‹è¯•:\n");
+	root = deleteNode(root, 100); // åˆ é™¤ä¸å­˜åœ¨çš„èŠ‚ç‚¹
+	printf("ä¸­åºéå†: "); PrintMidOT(root); printf("\n");
+	printf("å½“å‰æ ¹èŠ‚ç‚¹: %d\n", root->data);
 	printf("\n");
 
-	// ²âÊÔ6: ¿ÕÊ÷²âÊÔ
-	printf("6. ¿ÕÊ÷²âÊÔ:\n");
+	// æµ‹è¯•6: ç©ºæ ‘æµ‹è¯•
+	printf("6. ç©ºæ ‘æµ‹è¯•:\n");
 	SplayTree emptyTree = NULL;
-	printf("ÖĞĞò±éÀú¿ÕÊ÷: "); PrintMidOT(emptyTree); printf("\n");
+	printf("ä¸­åºéå†ç©ºæ ‘: "); PrintMidOT(emptyTree); printf("\n");
 	SplayTree searchEmpty = searchNode(emptyTree, 10);
-	printf("ËÑË÷¿ÕÊ÷: %s\n", (searchEmpty != NULL && searchEmpty->data == 10) ? "ÕÒµ½" : "Î´ÕÒµ½");
-	emptyTree = deleteNode(emptyTree, 10); // É¾³ı¿ÕÊ÷ÖĞµÄ½Úµã
-	printf("É¾³ı¿ÕÊ÷ÖĞµÄ½Úµãºó: "); PrintMidOT(emptyTree); printf("\n");
+	printf("æœç´¢ç©ºæ ‘: %s\n", (searchEmpty != NULL && searchEmpty->data == 10) ? "æ‰¾åˆ°" : "æœªæ‰¾åˆ°");
+	emptyTree = deleteNode(emptyTree, 10); // åˆ é™¤ç©ºæ ‘ä¸­çš„èŠ‚ç‚¹
+	printf("åˆ é™¤ç©ºæ ‘ä¸­çš„èŠ‚ç‚¹å: "); PrintMidOT(emptyTree); printf("\n");
 	printf("\n");
 
-	// ²âÊÔ7: ´óÁ¿²åÈëºÍÉ¾³ı²âÊÔ
-	printf("7. ´óÁ¿²åÈëºÍÉ¾³ı²âÊÔ:\n");
+	// æµ‹è¯•7: å¤§é‡æ’å…¥å’Œåˆ é™¤æµ‹è¯•
+	printf("7. å¤§é‡æ’å…¥å’Œåˆ é™¤æµ‹è¯•:\n");
 	SplayTree largeTree = NULL;
 	for (int i = 0; i < 10; i++) {
 		largeTree = insertNode(largeTree, i);
 	}
-	printf("²åÈë0-9ºóÖĞĞò±éÀú: "); PrintMidOT(largeTree); printf("\n");
-	printf("µ±Ç°¸ù½Úµã: %d\n", largeTree->data);
+	printf("æ’å…¥0-9åä¸­åºéå†: "); PrintMidOT(largeTree); printf("\n");
+	printf("å½“å‰æ ¹èŠ‚ç‚¹: %d\n", largeTree->data);
 
 	for (int i = 0; i < 10; i += 2) {
 		largeTree = deleteNode(largeTree, i);
 	}
-	printf("É¾³ıÅ¼ÊıºóÖĞĞò±éÀú: "); PrintMidOT(largeTree); printf("\n");
-	printf("µ±Ç°¸ù½Úµã: %d\n", largeTree->data);
+	printf("åˆ é™¤å¶æ•°åä¸­åºéå†: "); PrintMidOT(largeTree); printf("\n");
+	printf("å½“å‰æ ¹èŠ‚ç‚¹: %d\n", largeTree->data);
 	freeTree(largeTree);
 	printf("\n");
 
-	// ÊÍ·ÅÄÚ´æ
+	// é‡Šæ”¾å†…å­˜
 	freeTree(root);
-	printf("²âÊÔÍê³É£¬ÄÚ´æÒÑÊÍ·Å¡£\n");
+	printf("æµ‹è¯•å®Œæˆï¼Œå†…å­˜å·²é‡Šæ”¾ã€‚\n");
 }
 
 
